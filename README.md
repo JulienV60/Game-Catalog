@@ -1,4 +1,4 @@
-# Bootcamp game catalog
+# Team Miora-Yohan-Julien game catalog
 
 ## Setup
 
