@@ -15,9 +15,26 @@ export function makeApp(db: Db): core.Express {
       .find()
       .toArray()
       .then((data) => {
-        const allGames = data;
-        const allPlatform = data.map((element) => element.platform);
-        response.render("index", { allGames, allPlatform });
+        const nameGames = data.map((element) => element.name);
+        console.log(data);
+        const allPlatforms = data.map((element) => element.platform);
+        const allPlatformsName = allPlatforms.map((element) => element.name);
+        const allPlatformsNameUnique = allPlatformsName.filter(
+          (value, index) => allPlatformsName.indexOf(value) === index
+        );
+        const urlPlatforms = data.map((element) => element.platform);
+        const urlPlatformsdeux = urlPlatforms.map(
+          (element) => element.platform_logo_url
+        );
+        const urlPlatformsUnique = urlPlatformsdeux.filter(
+          (value, index) => urlPlatformsdeux.indexOf(value) === index
+        );
+        console.log(allPlatformsNameUnique);
+        response.render("index", {
+          allPlatformsNameUnique,
+          nameGames,
+          urlPlatformsUnique,
+        });
       });
   });
 
