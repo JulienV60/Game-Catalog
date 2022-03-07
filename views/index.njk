@@ -1,1 +1,17 @@
-<h1>This should be changed in the first PR</h1>
+{% extends "layout.njk" %}
+
+{%block css %}
+  <link rel="stylesheet" href="Public/css/style.css"/>
+{% endblock %}
+
+{% block content %}
+{% for item in allGames %}
+<p> {{item.name}}</p>
+{%endfor%}
+
+<p>{{allPlatform.name}}</p>
+
+
+
+{% endblock %}
+

@@ -5,16 +5,20 @@ import nunjucks from "nunjucks";
 
 export function makeApp(db: Db): core.Express {
   const app = express();
-
   nunjucks.configure("views", {
     autoescape: true,
     express: app,
   });
-
   app.set("view engine", "njk");
-
   app.get("/", (request: Request, response: Response) => {
-    response.render("index");
+    db.collection("games")
+      .find()
+      .toArray()
+      .then((data) => {
+        const allGames = data;
+        const allPlatform = data.map((element) => element.platform);
+        response.render("index", { allGames, allPlatform });
+      });
   });
 
   return app;
