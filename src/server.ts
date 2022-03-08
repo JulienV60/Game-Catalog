@@ -2,6 +2,8 @@ import express, { Request, Response } from "express";
 import * as core from "express-serve-static-core";
 import { Db } from "mongodb";
 import nunjucks from "nunjucks";
+import cookie from "cookie";
+import jose from "jose";
 
 export function makeApp(db: Db): core.Express {
   const app = express();
@@ -9,6 +11,7 @@ export function makeApp(db: Db): core.Express {
     autoescape: true,
     express: app,
   });
+  const formParser = express.urlencoded({ extended: true });
   app.set("view engine", "njk");
   app.get("/", (request: Request, response: Response) => {
     db.collection("games")
@@ -16,7 +19,6 @@ export function makeApp(db: Db): core.Express {
       .toArray()
       .then((data) => {
         const nameGames = data.map((element) => element.name);
-        console.log(data);
         const allPlatforms = data.map((element) => element.platform);
         const allPlatformsName = allPlatforms.map((element) => element.name);
         const allPlatformsNameUnique = allPlatformsName.filter(
@@ -29,7 +31,6 @@ export function makeApp(db: Db): core.Express {
         const urlPlatformsUnique = urlPlatformsdeux.filter(
           (value, index) => urlPlatformsdeux.indexOf(value) === index
         );
-        console.log(allPlatformsNameUnique);
         response.render("index", {
           allPlatformsNameUnique,
           nameGames,

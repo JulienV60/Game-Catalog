@@ -12,7 +12,20 @@
 
 <body>
 
-  {% block top%}{% endblock %}
+  {% block top%}
+  <button>
+<a href="/">Dev Games</a>
+</button>
+<form action="/search">
+<input type="text" placeholder="OldGen,NewGen..." name="Search">
+<button type="submit">Search</button>
+</form>
+<form action="/login" method="post">
+<input type="text" placeholder="Enter UserName" name="username">
+<input type="password" placeholder="Enter Password" name="password">
+<button type="submit"> Login</button>
+</form>
+  {% endblock %}
   {% block content%}{% endblock %}
 
 </body>
