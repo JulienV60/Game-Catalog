@@ -48,5 +48,6 @@ export function makeApp(db: Db): core.Express {
         response.render("gamedetails", { game, gameDetails });
       });
   });
+
   return app;
 }
