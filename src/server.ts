@@ -41,13 +41,19 @@ export function makeApp(db: Db): core.Express {
   app.post("/inscription", formParser, (request, response) => {
     const routeParameters = request.body;
     const info = routeParameters.username;
-    response.render("inscription");
+    response.render("index");
   });
   app.get("/login", (request, response) => {
-    fetch(`https://${process.env.AUTH0_DOMAIN}/authorize`).then((data) =>
-      data.json().then((text) => console.log(text))
+    fetch(`https://${process.env.AUTH0_DOMAIN}`).then((data) =>
+      console.log(data)
     );
   });
+  app.get("/logout", (request, response) => {
+    fetch(`https://${process.env.AUTH0_DOMAIN}/logout`).then((data) => {
+      console.log(data);
+    });
+  });
+
   app.get("/gamedetails", (request: Request, response: Response) => {
     db.collection("games")
       .find()

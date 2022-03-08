@@ -20,10 +20,18 @@
 <input type="text" placeholder="OldGen,NewGen..." name="Search">
 <button type="submit">Search</button>
 </form>
-<form action="/login" method="post">
+<form action="/inscription" method="post">
 <input type="text" placeholder="Enter UserName" name="username">
 <input type="password" placeholder="Enter Password" name="password">
-<button type="submit"> Login</button>
+<button type="submit"> Sign in</button>
+</form>
+<form action="/login" method="get">
+<input type="text" placeholder="Enter UserName" name="username">
+<input type="password" placeholder="Enter Password" name="password">
+<button type="submit"> Log in</button>
+</form>
+<form action="/logout" method="get">
+<button type="submit"> Log out</button>
 </form>
   {% endblock %}
   {% block content%}{% endblock %}
