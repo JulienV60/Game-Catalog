@@ -2,16 +2,16 @@ import express, { Request, Response } from "express";
 import * as core from "express-serve-static-core";
 import { Db } from "mongodb";
 import nunjucks from "nunjucks";
-import cookie from "cookie";
-import jose from "jose";
-
+import fetch from "node-fetch";
 export function makeApp(db: Db): core.Express {
   const app = express();
+  app.use(express.static("Public"));
   nunjucks.configure("views", {
     autoescape: true,
     express: app,
   });
   const formParser = express.urlencoded({ extended: true });
+
   app.set("view engine", "njk");
   app.get("/", (request: Request, response: Response) => {
     db.collection("games")
@@ -38,7 +38,16 @@ export function makeApp(db: Db): core.Express {
         });
       });
   });
-
+  app.post("/inscription", formParser, (request, response) => {
+    const routeParameters = request.body;
+    const info = routeParameters.username;
+    response.render("inscription");
+  });
+  app.get("/login", (request, response) => {
+    fetch(`https://${process.env.AUTH0_DOMAIN}/authorize`).then((data) =>
+      data.json().then((text) => console.log(text))
+    );
+  });
   app.get("/gamedetails", (request: Request, response: Response) => {
     db.collection("games")
       .find()
@@ -49,5 +58,6 @@ export function makeApp(db: Db): core.Express {
         response.render("gamedetails", { game, gameDetails });
       });
   });
+
   return app;
 }
