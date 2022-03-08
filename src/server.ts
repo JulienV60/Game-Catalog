@@ -44,9 +44,9 @@ export function makeApp(db: Db): core.Express {
     response.render("index");
   });
   app.get("/login", (request, response) => {
-    fetch(`https://${process.env.AUTH0_DOMAIN}`).then((data) =>
-      console.log(data)
-    );
+    fetch(
+      `https://${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}`
+    ).then((data) => console.log(data));
   });
   app.get("/logout", (request, response) => {
     fetch(`https://${process.env.AUTH0_DOMAIN}/logout`).then((data) => {
