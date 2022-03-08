@@ -38,7 +38,25 @@ export function makeApp(db: Db): core.Express {
       });
   });
 
-  app.get("/gamedetails", (request: Request, response: Response) => {
+  app.get("/:id", (request: Request, response: Response) => {
+
+    db.collection("games")
+      .find()
+      .toArray()
+      .then((data) => {
+        const id = request.params.id;
+        const myPlatform = data.filter((element) => {
+           return element.platform.name === id.replace('%20', ' ');
+        });
+        console.log(myPlatform)
+
+        response.render("gamesbyplatforms",{myPlatform})
+
+      })
+    })
+
+
+  app.get("/:id/:gamedetails", (request: Request, response: Response) => {
     db.collection("games")
       .find()
       .toArray()
@@ -48,5 +66,7 @@ export function makeApp(db: Db): core.Express {
         response.render("gamedetails", { game, gameDetails });
       });
   });
+
   return app;
 }
+
