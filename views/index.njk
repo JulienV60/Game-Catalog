@@ -3,18 +3,6 @@
   <link rel="stylesheet" href="Public/css/style.css"/>
 {% endblock %}
 
-{% block top %}
-<button>
-<a href="/">Dev Games</a>
-</button>
-<form action="/search">
-<input type="text" placeholder="OldGen,NewGen..." name="Search">
-<button type="submit">Search</button>
-</form>
-
-
-{% endblock %}
-
 {% block content %}
 {% for item in allPlatformsNameUnique %}{% endfor %}
 

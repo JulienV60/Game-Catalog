@@ -9,7 +9,15 @@
 <title>Home</title>
   {%block css %}{% endblock %}
 </head>
-
+<header>
+<button>
+<a href="/">Dev Games</a>
+</button>
+<form action="/search">
+<input type="text" placeholder="OldGen,NewGen..." name="Search">
+<button type="submit">Search</button>
+</form>
+</header>
 <body>
 
   {% block top%}{% endblock %}
