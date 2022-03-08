@@ -50,7 +50,7 @@ export function makeApp(db: Db): core.Express {
   });
   app.get("/logout", (request, response) => {
     fetch(`https://${process.env.AUTH0_DOMAIN}/logout`).then((data) => {
-      console.log(data);
+      data;
     });
   });
 
