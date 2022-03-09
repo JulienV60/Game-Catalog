@@ -118,7 +118,9 @@ export function makeApp(db: Db): core.Express {
   });
   app.get(`/account`, async (request: Request, response: Response) => {
     const token = cookie.parse(request.headers.cookie || "");
-
+    const id_token = token.BestIdTokenEver;
+    console.log(id_token);
+    fetch(`${process.env.AUTH0_DOMAIN}`);
     response.render("account");
   });
 
