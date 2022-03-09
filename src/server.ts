@@ -2,13 +2,16 @@ import express, { Request, Response } from "express";
 import * as core from "express-serve-static-core";
 import { Db } from "mongodb";
 import nunjucks from "nunjucks";
-
+import fetch from "node-fetch";
 export function makeApp(db: Db): core.Express {
   const app = express();
+  app.use(express.static("Public"));
   nunjucks.configure("views", {
     autoescape: true,
     express: app,
   });
+  const formParser = express.urlencoded({ extended: true });
+
   app.set("view engine", "njk");
   app.get("/", (request: Request, response: Response) => {
     db.collection("games")
@@ -16,7 +19,6 @@ export function makeApp(db: Db): core.Express {
       .toArray()
       .then((data) => {
         const nameGames = data.map((element) => element.name);
-        console.log(data);
         const allPlatforms = data.map((element) => element.platform);
         const allPlatformsName = allPlatforms.map((element) => element.name);
         const allPlatformsNameUnique = allPlatformsName.filter(
@@ -29,7 +31,6 @@ export function makeApp(db: Db): core.Express {
         const urlPlatformsUnique = urlPlatformsdeux.filter(
           (value, index) => urlPlatformsdeux.indexOf(value) === index
         );
-        console.log(allPlatformsNameUnique);
         response.render("index", {
           allPlatformsNameUnique,
           nameGames,
@@ -37,8 +38,41 @@ export function makeApp(db: Db): core.Express {
         });
       });
   });
+  app.post("/inscription", formParser, (request, response) => {
+    const routeParameters = request.body;
+    const info = routeParameters.username;
+    response.render("index");
+  });
+  app.get("/login", (request, response) => {
+    fetch(
+      `https://${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}`
+    ).then((data) => console.log(data));
+  });
+  app.get("/logout", (request, response) => {
+    fetch(`https://${process.env.AUTH0_DOMAIN}/logout`).then((data) => {
+      data;
+    });
+  });
 
-  app.get("/gamedetails", (request: Request, response: Response) => {
+  app.get("/:id", (request: Request, response: Response) => {
+
+    db.collection("games")
+      .find()
+      .toArray()
+      .then((data) => {
+        const id = request.params.id;
+        const myPlatform = data.filter((element) => {
+           return element.platform.name === id.replace('%20', ' ');
+        });
+        console.log(myPlatform)
+
+        response.render("gamesbyplatforms",{myPlatform})
+
+      })
+    })
+
+
+  app.get("/:id/:gamedetails", (request: Request, response: Response) => {
     db.collection("games")
       .find()
       .toArray()
@@ -48,5 +82,7 @@ export function makeApp(db: Db): core.Express {
         response.render("gamedetails", { game, gameDetails });
       });
   });
+
   return app;
 }
+
