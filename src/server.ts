@@ -48,14 +48,13 @@ export function makeApp(db: Db): core.Express {
       });
   });
 
-  app.get("/callback", async (request: Request, response: Response) => {
-    const routeParameters = request.query.code;
-    console.log(routeParameters);
-    const jwksUrl = new URL(`${process.env.AUTH0_JSON_WEB_KEY_SET}`);
-    console.log(jwksUrl);
+  app.post("/callback", async (request: Request, response: Response) => {
+    const queryCode = request.query.code;
+    const url = `${process.env.AUTH0_TOKEN}?grant_type=authorization_code&client_id=${process.env.AUTH0_CLIENT_ID}&client_secret=${process.env.AUTH0_CLIENT_SECRET}&code=${queryCode}&redirect_uri=http://localhost:3000/home`;
+
     response.setHeader(
       "Set-Cookie",
-      cookie.serialize("token", `${process.env.AUTH0_TOKEN}`, {
+      cookie.serialize("token", ``, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
         maxAge: 60 * 60,
@@ -63,8 +62,8 @@ export function makeApp(db: Db): core.Express {
         path: "/",
       })
     );
-    response.redirect("/home");
   });
+
   /// Login
   app.get("/login", (request, response) => {
     const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}`;
