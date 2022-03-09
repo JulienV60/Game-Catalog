@@ -63,7 +63,9 @@ export function makeApp(db: Db): core.Express {
 
     const access_token = dataToken.access_token;
     console.log(access_token);
+    console.log("coucou");
     const id_token = dataToken.id_token;
+    console.log(id_token);
 
     response.setHeader(
       "Set-Cookie",
