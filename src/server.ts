@@ -39,34 +39,35 @@ export function makeApp(db: Db): core.Express {
   });
 
   app.get("/:id", (request: Request, response: Response) => {
-
     db.collection("games")
       .find()
       .toArray()
       .then((data) => {
         const id = request.params.id;
         const myPlatform = data.filter((element) => {
-           return element.platform.name === id.replace('%20', ' ');
+          return element.platform.name === id.replace("%20", " ");
         });
-        console.log(myPlatform)
+        console.log(myPlatform);
 
-        response.render("gamesbyplatforms",{myPlatform})
+        response.render("gamesbyplatforms", { myPlatform });
+      });
+  });
 
-      })
-    })
-
-
-  app.get("/:id/:gamedetails", (request: Request, response: Response) => {
+  app.get("/:id/:slug", (request: Request, response: Response) => {
     db.collection("games")
       .find()
       .toArray()
       .then((details) => {
-        const game = details;
-        const gameDetails = details.map((element) => element);
-        response.render("gamedetails", { game, gameDetails });
+        const slugSelected = request.params.slug;
+        const gameDetails = details.filter((element) => {
+          return element.slug === slugSelected;
+        });
+        response.render("gamedetails", {
+          gameDetails,
+          slugSelected,
+        });
       });
   });
 
   return app;
 }
-
