@@ -3,6 +3,9 @@ import * as core from "express-serve-static-core";
 import { Db } from "mongodb";
 import nunjucks from "nunjucks";
 import fetch from "node-fetch";
+import cookie from "cookie";
+import jose from "jose";
+
 export function makeApp(db: Db): core.Express {
   const app = express();
   app.use(express.static("Public"));
@@ -11,9 +14,15 @@ export function makeApp(db: Db): core.Express {
     express: app,
   });
   const formParser = express.urlencoded({ extended: true });
-
   app.set("view engine", "njk");
+
+  ///Départ serveur vers home
   app.get("/", (request: Request, response: Response) => {
+    response.redirect("/home");
+  });
+
+  /// Home vers index
+  app.get("/home", async (request: Request, response: Response) => {
     db.collection("games")
       .find()
       .toArray()
@@ -38,39 +47,54 @@ export function makeApp(db: Db): core.Express {
         });
       });
   });
-  app.post("/inscription", formParser, (request, response) => {
-    const routeParameters = request.body;
-    const info = routeParameters.username;
-    response.render("index");
+
+  app.get("/callback", async (request: Request, response: Response) => {
+    const routeParameters = request.query.code;
+    console.log(routeParameters);
+    const jwksUrl = new URL(`${process.env.AUTH0_JSON_WEB_KEY_SET}`);
+    console.log(jwksUrl);
+    response.setHeader(
+      "Set-Cookie",
+      cookie.serialize("token", `${process.env.AUTH0_TOKEN}`, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        maxAge: 60 * 60,
+        sameSite: "strict",
+        path: "/",
+      })
+    );
+    response.redirect("/home");
   });
+  /// Login
   app.get("/login", (request, response) => {
-    fetch(
-      `https://${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}`
-    ).then((data) => console.log(data));
+    const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}`;
+    response.redirect(url);
   });
+
+  app.get(`/account`, async (request: Request, response: Response) => {
+    const routeParameters = request.params;
+    console.log(routeParameters);
+  });
+
+  /// Logout
   app.get("/logout", (request, response) => {
-    fetch(`https://${process.env.AUTH0_DOMAIN}/logout`).then((data) => {
-      data;
-    });
+    const url = `${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=http://localhost:3000`;
+    response.redirect(url);
   });
 
   app.get("/:id", (request: Request, response: Response) => {
-
     db.collection("games")
       .find()
       .toArray()
       .then((data) => {
         const id = request.params.id;
         const myPlatform = data.filter((element) => {
-           return element.platform.name === id.replace('%20', ' ');
+          return element.platform.name === id.replace("%20", " ");
         });
-        console.log(myPlatform)
 
-        response.render("gamesbyplatforms",{myPlatform})
-
-      })
-    })
-
+        response.render("gamesbyplatforms", { myPlatform });
+      });
+  });
 
   app.get("/:id/:gamedetails", (request: Request, response: Response) => {
     db.collection("games")
@@ -85,4 +109,3 @@ export function makeApp(db: Db): core.Express {
 
   return app;
 }
-
