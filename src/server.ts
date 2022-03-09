@@ -62,11 +62,12 @@ export function makeApp(db: Db): core.Express {
       .then((token) => token);
 
     const access_token = dataToken.access_token;
+    console.log(access_token);
     const id_token = dataToken.id_token;
 
     response.setHeader(
       "Set-Cookie",
-      cookie.serialize("BestAccessTokenEver", access_token, {
+      cookie.serialize("AccessToken", access_token, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
         maxAge: 60 * 60,
@@ -76,7 +77,7 @@ export function makeApp(db: Db): core.Express {
     );
     response.setHeader(
       "Set-Cookie",
-      cookie.serialize("BestIdTokenEver", id_token, {
+      cookie.serialize("idToken", id_token, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
         maxAge: 60 * 60,
@@ -84,69 +85,70 @@ export function makeApp(db: Db): core.Express {
         path: "/",
       })
     );
+    /// Home vers index
 
-    response.redirect("/home");
-  });
-
-  /// Login(Authentification)
-  app.get("/login", (request, response) => {
-    const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}&audience=${process.env.AUTH0_AUDIENCE}&scope=${process.env.AUTH0_SCOPES}`;
-    response.redirect(url);
-  });
-  /// Private(Control si il y a un bien une connexion/inscription et que le token/cookie est bien présent)
-  app.get(`/private`, async (request: Request, response: Response) => {
-    async function userSession(request: Request): Promise<boolean> {
-      const token = cookie.parse(request.headers.cookie || "")[
-        "BestAccessTokenEver" || "BestIdTokenEver"
-      ];
-      try {
-        if (!token) {
+    /// Login(Authentification)
+    app.get("/login", (request, response) => {
+      const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}&audience=${process.env.AUTH0_AUDIENCE}&scope=${process.env.AUTH0_SCOPES}`;
+      response.redirect(url);
+    });
+    /// Private(Control si il y a un bien une connexion/inscription et que le token/cookie est bien présent)
+    app.get(`/private`, async (request: Request, response: Response) => {
+      async function userSession(request: Request): Promise<boolean> {
+        const token = cookie.parse(request.headers.cookie || "")[
+          "AccessToken" || "IdToken"
+        ];
+        try {
+          if (!token) {
+            return false;
+          }
+          return true;
+        } catch (error) {
+          console.error(error);
           return false;
         }
-        return true;
-      } catch (error) {
-        console.error(error);
-        return false;
       }
-    }
-    const isLogged: boolean = await userSession(request);
-    if (!isLogged) {
-      response.redirect("/");
-      return;
-    }
-    response.redirect("/account");
-  });
-  app.get(`/account`, async (request: Request, response: Response) => {
-    const token = cookie.parse(request.headers.cookie || "");
-    const id_token = token.BestIdTokenEver;
-    console.log(id_token);
-    fetch(`${process.env.AUTH0_DOMAIN}`);
-    response.render("account");
-  });
+      const isLogged: boolean = await userSession(request);
+      if (!isLogged) {
+        response.redirect("/");
+        return;
+      }
+      response.redirect("/account");
+    });
+    app.get(`/account`, async (request: Request, response: Response) => {
+      const token = cookie.parse(request.headers.cookie || "");
+      const id_token = token.BestIdTokenEver;
+      console.log(id_token);
+      fetch(`${process.env.AUTH0_DOMAIN}`);
+      response.render("account");
+    });
 
-  /// Logout + Destruction du cookie
-  app.get("/logout", (request, response) => {
-    const url = `${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=http://localhost:3000`;
-    response.setHeader(
-      "Set-Cookie",
-      cookie.serialize("BestAccessTokenEver", "deleted", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
-        maxAge: 0,
-        path: "/",
-      })
-    );
-    response.setHeader(
-      "Set-Cookie",
-      cookie.serialize("BestIdTokenEver", "deleted", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
-        maxAge: 0,
-        path: "/",
-      })
-    );
+    /// Logout + Destruction du cookie
+    app.get("/logout", (request, response) => {
+      const url = `${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=http://localhost:3000`;
+      response.setHeader(
+        "Set-Cookie",
+        cookie.serialize("AccessToken", "deleted", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV !== "development",
+          maxAge: 0,
+          path: "/",
+        })
+      );
+      response.setHeader(
+        "Set-Cookie",
+        cookie.serialize("IdToken", "deleted", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV !== "development",
+          maxAge: 0,
+          path: "/",
+        })
+      );
 
-    response.redirect(url);
+      response.redirect(url);
+    });
+
+    response.redirect("/home");
   });
 
   app.get("/:id", (request: Request, response: Response) => {
