@@ -103,12 +103,20 @@
 <!-- LOGIN/LOGOUT -->
 
 <form action="/login" method="get">
-<button type="submit"> Log in</button>
+<button type="submit"> Connexion</button>
 </form>
 <form action="/logout" method="get">
-<button type="submit"> Log out</button>
+<button type="submit"> Déconnexion</button>
 </form>
+
 <!-- LOGIN/LOGOUT END -->
+
+<form action="/private" method="get">
+<button type="submit"> Mon Compte</button>
+</form>
+
+  {% endblock %}
+
   {% block content%}{% endblock %}
 
 <footer>
