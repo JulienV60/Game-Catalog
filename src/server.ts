@@ -96,14 +96,19 @@ export function makeApp(db: Db): core.Express {
       });
   });
 
-  app.get("/:id/:gamedetails", (request: Request, response: Response) => {
+  app.get("/:id/:slug", (request: Request, response: Response) => {
     db.collection("games")
       .find()
       .toArray()
       .then((details) => {
-        const game = details;
-        const gameDetails = details.map((element) => element);
-        response.render("gamedetails", { game, gameDetails });
+        const slugSelected = request.params.slug;
+        const gameDetails = details.filter((element) => {
+          return element.slug === slugSelected;
+        });
+        response.render("gamedetails", {
+          gameDetails,
+          slugSelected,
+        });
       });
   });
 

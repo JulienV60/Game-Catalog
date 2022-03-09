@@ -1,26 +1,15 @@
 {% extends "layout.njk" %}
 
-{%block css %}
- <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-{% endblock %}
-
 {% block content %}
 
-<h1> DETAILS </h1>
 
 {# ------ GAME-DETAILS ------- #}
 
 {%for game in gameDetails %}
-  <img href = "{{game.cover.url}}"src="{{game.cover.url}}"/>
-  <p> {{game.name}} </p>
+  <img src="{{game.cover.url}}"/>
+  <h1> {{game.name}} </h1>
   <p> {{game.platform.name}} </p>
-  <img href = "{{game.platform.platform_logo_url}}"src="{{game.platform.platform_logo_url}}"/>
+  <a href = "{{game.platform.platform_logo_url}}"><img src="{{game.platform.platform_logo_url}}"/></a>
   <p> {{game.genres}} </p>
   <div>
       <button type="button">
@@ -32,7 +21,6 @@
         <span><i class="fas fa-shopping-cart"></i></span>
       </button>
   </div>
-   <img href = "{{game.screenshots.url}}"src="{{game.screenshots.url}}"/>
    <p> {{game.summary}} </p>
    {%else%}
   <li> It is empty </li>
