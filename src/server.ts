@@ -13,7 +13,6 @@ export function makeApp(db: Db): core.Express {
     autoescape: true,
     express: app,
   });
-  const formParser = express.urlencoded({ extended: true });
   app.set("view engine", "njk");
 
   ///Départ serveur vers home
@@ -47,15 +46,22 @@ export function makeApp(db: Db): core.Express {
         });
       });
   });
-
+  /// Autorization + cookie redirect vers home
   app.get("/callback", async (request: Request, response: Response) => {
-    const routeParameters = request.query.code;
-    console.log(routeParameters);
-    const jwksUrl = new URL(`${process.env.AUTH0_JSON_WEB_KEY_SET}`);
-    console.log(jwksUrl);
+    const queryCode = request.query.code;
+    const dataToken = await fetch(`${process.env.AUTH0_TOKEN}`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      body: `grant_type=authorization_code&client_id=${process.env.AUTH0_CLIENT_ID}&client_secret=${process.env.AUTH0_CLIENT_SECRET}&code=${queryCode}&redirect_uri=http://localhost:3000/home`,
+    })
+      .then((data) => data.json())
+      .then((token) => token.access_token);
+
     response.setHeader(
       "Set-Cookie",
-      cookie.serialize("token", `${process.env.AUTH0_TOKEN}`, {
+      cookie.serialize("BestTokenEver", dataToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
         maxAge: 60 * 60,
@@ -65,20 +71,29 @@ export function makeApp(db: Db): core.Express {
     );
     response.redirect("/home");
   });
-  /// Login
+
+  /// Login(Authentification)
   app.get("/login", (request, response) => {
     const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}`;
     response.redirect(url);
   });
-
+  /// Account
   app.get(`/account`, async (request: Request, response: Response) => {
-    const routeParameters = request.params;
-    console.log(routeParameters);
+    response;
   });
 
-  /// Logout
+  /// Logout + Destruction du cookie
   app.get("/logout", (request, response) => {
     const url = `${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=http://localhost:3000`;
+    response.setHeader(
+      "Set-Cookie",
+      cookie.serialize("BestTokenEver", "deleted", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        maxAge: 0,
+        path: "/",
+      })
+    );
     response.redirect(url);
   });
 
