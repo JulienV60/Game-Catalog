@@ -24,13 +24,19 @@
 <body>
 <header>
 <!-- NAVBAR START -->
+{%block top%}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid ">
     <a class="navbar-brand" href="/">Dev GAMES</a>
     <!-- Search bar start -->
       <form class="d-flex" method="POST" action="/search" >
+
+        <input class="form-control me-sm-2" type="text" placeholder="Enter a Game..." name="Search">
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+
         <input class="search-bar" type="text" placeholder="OldGen,NewGen..." name="Search">
         <button class="btn btn-secondary mx-auto " type="submit"> Search</button>
+
       </form>
       <!-- Search bar end -->
      <div class="nav justify-content-end" id="navbarColor02">
@@ -39,6 +45,19 @@
           <a class="nav-link active" href="/login"><i class="fas fa-user"></i>
             <span class="visually-hidden">(current)</span>
           </a>
+
+        </li>
+         <li class="nav-item">
+          <a class="nav-link active" href="/logout">Déconnexion
+            <span class="visually-hidden">(current)</span>
+          </a>
+
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/private">Mon Compte
+            <span class="visually-hidden">(current)</span>
+          </a>
+
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#"> <i class="fas fa-shopping-cart"></i></a>
@@ -48,7 +67,7 @@
   </div>
 </nav>
 <!-- NAVBAR-END -->
-
+{% endblock %}
 
 <!-- PLATFORMS -->
 <div class="bg-dark">
@@ -91,7 +110,7 @@
 <!-- PLATFORMS END -->
 
 
-<!-- LOGIN/LOGOUT -->
+
 
 <form class="btn-group" action="/login" method="get">
 <button type="submit"> Connexion</button>
@@ -110,6 +129,7 @@
 <!-- LOGIN/LOGOUT END -->
 </header>
 <section class= "parallax"></section>
+
 
   {% block content%}{% endblock %}
 <section class= "parallax"></section>

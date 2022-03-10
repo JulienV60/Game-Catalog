@@ -1,7 +1,8 @@
 import cookie from "cookie";
 import express, { Request, Response } from "express";
 import * as core from "express-serve-static-core";
-import { Db } from "mongodb";
+import { cpSync } from "fs";
+import { Db, ObjectId } from "mongodb";
 import fetch from "node-fetch";
 import nunjucks from "nunjucks";
 import { platform } from "os";
@@ -228,9 +229,38 @@ export function makeApp(db: Db): core.Express {
         response.render("account", { name, nickname, picture });
       });
   });
-  app.get("/panier", async (request: Request, response: Response) => {
-    response.render("Panier");
-  });
+  app.get(
+    "/panier",
+    formParser,
+    async (request: Request, response: Response) => {
+      const routeParameters = request.query;
+      const idPanier = Object.keys(routeParameters).reverse();
+      const idPanierIndex = idPanier[0];
+      response.setHeader(
+        "Set-Cookie",
+        cookie.serialize("Panier", idPanierIndex, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV !== "development",
+          maxAge: 60 * 60,
+          sameSite: "strict",
+          path: "/",
+        })
+      );
+      type Game = {
+        name: string;
+        platform: string;
+        cover: string;
+        url: string;
+      };
+      const idObject = new ObjectId(idPanierIndex);
+      const url = await db.collection<Game>("games").findOne({ _id: idObject });
+      const name = url?.name;
+      const platform = url?.platform;
+      const cover = url?.cover;
+      response.render("account", { name, platform, cover });
+    }
+  );
+
   /// Logout + Destruction du cookie
   app.get("/logout", (request, response) => {
     const url = `${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=${process.env.AUTH0_LOCAL_HOST}`;
@@ -247,23 +277,41 @@ export function makeApp(db: Db): core.Express {
         maxAge: 0,
         path: "/",
       }),
+      cookie.serialize("Panier", "deleted", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        maxAge: 0,
+        path: "/",
+      }),
     ]);
 
     response.redirect(url);
   });
   app.post("/search", formParser, async (request, response) => {
     const routeParameters = request.body.Search;
-    console.log(routeParameters);
-    const dataBase = await db.collection("games").find().toArray();
-    const searchGame = await dataBase.map((element) => {
-      return element.slug.split("-").join(" ");
-    });
-    if (searchGame.includes(routeParameters)) {
-      console.log("trouvé");
-      response.render("gamedetails", { searchGame });
-    } else {
-      console.error("404");
-    }
+    const gameDetails = [];
+    const routeParametersFormated: string = routeParameters
+      .split("!")
+      .join("")
+      .split(":")
+      .join("")
+      .split("&")
+      .join("")
+      .split(".")
+      .join("")
+      .split("'")
+      .join("")
+      .split("  ")
+      .join(" ")
+      .split(" ")
+      .join("-");
+
+    const dataBase = await db
+      .collection("games")
+      .findOne({ slug: routeParametersFormated.toLowerCase() });
+    gameDetails.push(dataBase);
+
+    response.render("gamedetails", { gameDetails });
   });
 
   /// games list by platform
