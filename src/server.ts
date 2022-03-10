@@ -157,7 +157,7 @@ export function makeApp(db: Db): core.Express {
       headers: {
         "Content-type": "application/x-www-form-urlencoded",
       },
-      body: `grant_type=authorization_code&client_id=${process.env.AUTH0_CLIENT_ID}&client_secret=${process.env.AUTH0_CLIENT_SECRET}&code=${queryCode}&redirect_uri=http://localhost:3000/home`,
+      body: `grant_type=authorization_code&client_id=${process.env.AUTH0_CLIENT_ID}&client_secret=${process.env.AUTH0_CLIENT_SECRET}&code=${queryCode}&redirect_uri=${process.env.AUTH0_LOCAL_HOST}`,
     })
       .then((data) => data.json())
       .then((token) => token);
@@ -233,7 +233,7 @@ export function makeApp(db: Db): core.Express {
   });
   /// Logout + Destruction du cookie
   app.get("/logout", (request, response) => {
-    const url = `${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=http://localhost:3000`;
+    const url = `${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=${process.env.AUTH0_LOCAL_HOST}`;
     response.setHeader("Set-Cookie", [
       cookie.serialize("AccessToken", "deleted", {
         httpOnly: true,
