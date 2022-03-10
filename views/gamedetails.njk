@@ -5,7 +5,7 @@
 
 {# ------ GAME-DETAILS ------- #}
 
-{%for game in gameDetails %}
+{# {%for game in gameDetails %}
   <img src="{{game.cover.url}}"/>
   <h1> {{game.name}} </h1>
   <p> {{game.platform.name}} </p>
@@ -24,8 +24,42 @@
    <p> {{game.summary}} </p>
    {%else%}
   <li> It is empty </li>
-{%endfor%}
+{%endfor%} #}
 {# ------ GAME-DETAILS END ------- #}
+{%for game in gameDetails %}
+<div class="container">
+<div class="row mx-auto">
+  <div class="col-sm-4">
+      <img src="{{game.cover.url}}" class="img-fluid rounded-start" alt="{{game.cover.name}}">
+  </div>
+
+
+  <div class="col-sm-8 text-center bg-secondary" >
+        <h5 class="card-title">{{game.name}} </h5>
+        <p class="card-title">{{game.platform.name}} <img class ="logo-navbar" src="{{game.platform.platform_logo_url}}" alt ="{{game.platform.name}}"/> </p>
+        <p class="card-text"> {{game.genres}} </p>
+      <div>
+       <button type="button">
+        Add to cart
+        <span><i class="fas fa-plus"></i></span>
+        </button>
+        <button type="button" >
+        Buy now
+        <span><i class="fas fa-shopping-cart"></i></span>
+        </button>
+  </div>
+  </div>
+
+  <div class="row justify-content-center">
+  <div class="col-8 text-center bg-secondary">
+     <p class="card-text"> {{game.summary}}</p>
+  </div>
+  </div>
+  </div>
+
+{%else%}
+  <li> It is empty </li>
+{%endfor%}
 
 {% endblock %}
 

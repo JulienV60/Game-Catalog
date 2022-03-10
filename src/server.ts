@@ -5,7 +5,6 @@ import nunjucks from "nunjucks";
 import fetch from "node-fetch";
 import cookie from "cookie";
 import jose from "jose";
-const jwksUrl = new URL(`${process.env.AUTH0_JSON_WEB_KEY_SET}`);
 
 export function makeApp(db: Db): core.Express {
   const app = express();
@@ -14,6 +13,7 @@ export function makeApp(db: Db): core.Express {
     autoescape: true,
     express: app,
   });
+  const formParser = express.urlencoded({ extended: true });
   app.set("view engine", "njk");
 
   ///Départ serveur vers home
@@ -23,7 +23,6 @@ export function makeApp(db: Db): core.Express {
 
   /// Home vers index
   app.get("/home", async (request: Request, response: Response) => {
-    const routeParameters = request.body;
     db.collection("games")
       .find()
       .toArray()
@@ -48,25 +47,15 @@ export function makeApp(db: Db): core.Express {
         });
       });
   });
-  /// Autorization + cookie redirect vers home
+
   app.get("/callback", async (request: Request, response: Response) => {
-    const queryCode = request.query.code;
-    const dataToken = await fetch(`${process.env.AUTH0_TOKEN}`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/x-www-form-urlencoded",
-      },
-      body: `grant_type=authorization_code&client_id=${process.env.AUTH0_CLIENT_ID}&client_secret=${process.env.AUTH0_CLIENT_SECRET}&code=${queryCode}&redirect_uri=http://localhost:3000/home`,
-    })
-      .then((data) => data.json())
-      .then((token) => token);
-
-    const access_token = dataToken.access_token;
-    const id_token = dataToken.id_token;
-
+    const routeParameters = request.query.code;
+    console.log(routeParameters);
+    const jwksUrl = new URL(`${process.env.AUTH0_JSON_WEB_KEY_SET}`);
+    console.log(jwksUrl);
     response.setHeader(
       "Set-Cookie",
-      cookie.serialize("BestAccessTokenEver", access_token, {
+      cookie.serialize("token", `${process.env.AUTH0_TOKEN}`, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
         maxAge: 60 * 60,
@@ -74,78 +63,22 @@ export function makeApp(db: Db): core.Express {
         path: "/",
       })
     );
-    response.setHeader(
-      "Set-Cookie",
-      cookie.serialize("BestIdTokenEver", id_token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
-        maxAge: 60 * 60,
-        sameSite: "strict",
-        path: "/",
-      })
-    );
-
     response.redirect("/home");
   });
-
-  /// Login(Authentification)
+  /// Login
   app.get("/login", (request, response) => {
-    const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}&audience=${process.env.AUTH0_AUDIENCE}&scope=${process.env.AUTH0_SCOPES}`;
+    const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}`;
     response.redirect(url);
   });
-  /// Private(Control si il y a un bien une connexion/inscription et que le token/cookie est bien présent)
-  app.get(`/private`, async (request: Request, response: Response) => {
-    async function userSession(request: Request): Promise<boolean> {
-      const token = cookie.parse(request.headers.cookie || "")[
-        "BestAccessTokenEver" || "BestIdTokenEver"
-      ];
-      try {
-        if (!token) {
-          return false;
-        }
-        return true;
-      } catch (error) {
-        console.error(error);
-        return false;
-      }
-    }
-    const isLogged: boolean = await userSession(request);
-    if (!isLogged) {
-      response.redirect("/");
-      return;
-    }
-    response.redirect("/account");
-  });
+
   app.get(`/account`, async (request: Request, response: Response) => {
-    const token = cookie.parse(request.headers.cookie || "");
-    const id_token = token.BestIdTokenEver;
-    console.log(id_token);
-    fetch(`${process.env.AUTH0_DOMAIN}`);
-    response.render("account");
+    const routeParameters = request.params;
+    console.log(routeParameters);
   });
 
-  /// Logout + Destruction du cookie
+  /// Logout
   app.get("/logout", (request, response) => {
     const url = `${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=http://localhost:3000`;
-    response.setHeader(
-      "Set-Cookie",
-      cookie.serialize("BestAccessTokenEver", "deleted", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
-        maxAge: 0,
-        path: "/",
-      })
-    );
-    response.setHeader(
-      "Set-Cookie",
-      cookie.serialize("BestIdTokenEver", "deleted", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
-        maxAge: 0,
-        path: "/",
-      })
-    );
-
     response.redirect(url);
   });
 
