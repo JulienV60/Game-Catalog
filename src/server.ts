@@ -103,7 +103,6 @@ export function makeApp(db: Db): core.Express {
         }
         return true;
       } catch (error) {
-        console.error(error);
         return false;
       }
     }
