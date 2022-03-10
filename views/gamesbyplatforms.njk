@@ -4,13 +4,14 @@
 {% endblock %}
 
 {% block content %}
+ {%for item in myPlatform %}
+  <div class="container justify-content-center" style="width: 18rem ">
+    <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
+   </div>
+ {%endfor%}
 
-{%for item in myPlatform %}
-<a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-{# <p> {{item.name}}</p> #}
 
 
-{%endfor%}
 
 {% endblock %}
 

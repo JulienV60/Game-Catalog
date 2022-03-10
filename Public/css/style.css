@@ -22,9 +22,37 @@
   padding-left: 50px;
 } */
 
+/* ------ Parallax ------- */
+body,
+html {
+  background-image: url("https://images8.alphacoders.com/118/thumb-1920-1186452.jpg") !important;
+  height: 25%;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+/* .parallax {
+  background-image: url("/images/background2.jpg") !important;
+  height: 25%;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+} */
+
+/* ------ Background blockend ------- */
+.transbackground {
+  margin: 30px;
+  background-color: #ffffff;
+  border: 1px solid black;
+}
+
 /* ------ Footer ------- */
 footer {
+  background-color: black;
   text-align: center;
   text-decoration: none;
   padding-top: 5em;
+  box-shadow: 90px 0 100px 100px black;
 }
