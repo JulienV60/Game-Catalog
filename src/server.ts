@@ -1,10 +1,11 @@
+import cookie from "cookie";
 import express, { Request, Response } from "express";
 import * as core from "express-serve-static-core";
 import { Db } from "mongodb";
-import nunjucks from "nunjucks";
 import fetch from "node-fetch";
-import cookie from "cookie";
-import jose from "jose";
+import nunjucks from "nunjucks";
+import { platform } from "os";
+
 const jwksUrl = new URL(`${process.env.AUTH0_JSON_WEB_KEY_SET}`);
 
 export function makeApp(db: Db): core.Express {
@@ -15,6 +16,7 @@ export function makeApp(db: Db): core.Express {
     express: app,
   });
   app.set("view engine", "njk");
+  const formParser = express.urlencoded({ extended: true });
 
   ///Départ serveur vers home
   app.get("/", (request: Request, response: Response) => {
@@ -118,26 +120,22 @@ export function makeApp(db: Db): core.Express {
     const access_token = dataToken.access_token;
     const id_token = dataToken.id_token;
 
-    response.setHeader(
-      "Set-Cookie",
-      cookie.serialize("BestAccessTokenEver", access_token, {
+    response.setHeader("Set-Cookie", [
+      cookie.serialize("AccessToken", access_token, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
         maxAge: 60 * 60,
         sameSite: "strict",
         path: "/",
-      })
-    );
-    response.setHeader(
-      "Set-Cookie",
-      cookie.serialize("BestIdTokenEver", id_token, {
+      }),
+      cookie.serialize("IdToken", id_token, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
         maxAge: 60 * 60,
         sameSite: "strict",
         path: "/",
-      })
-    );
+      }),
+    ]);
 
     response.redirect("/home");
   });
@@ -151,7 +149,7 @@ export function makeApp(db: Db): core.Express {
   app.get(`/private`, async (request: Request, response: Response) => {
     async function userSession(request: Request): Promise<boolean> {
       const token = cookie.parse(request.headers.cookie || "")[
-        "BestAccessTokenEver" || "BestIdTokenEver"
+        "AccessToken" || "IdToken"
       ];
       try {
         if (!token) {
@@ -172,35 +170,55 @@ export function makeApp(db: Db): core.Express {
   });
   app.get(`/account`, async (request: Request, response: Response) => {
     const token = cookie.parse(request.headers.cookie || "");
-    const id_token = token.BestIdTokenEver;
-    console.log(id_token);
-    fetch(`${process.env.AUTH0_DOMAIN}`);
-    response.render("account");
+    const TokenAccess = token.AccessToken;
+    fetch(`${process.env.AUTH0_DOMAIN}/userinfo`, {
+      method: "Post",
+      headers: {
+        Authorization: `Bearer ${TokenAccess}`,
+      },
+    })
+      .then((datajson) => datajson.json())
+      .then((data) => {
+        console.log(data);
+        const name = data.name;
+        const nickname = data.nickname;
+        const picture = data.picture;
+        response.render("account", { name, nickname, picture });
+      });
   });
 
   /// Logout + Destruction du cookie
   app.get("/logout", (request, response) => {
     const url = `${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=http://localhost:3000`;
-    response.setHeader(
-      "Set-Cookie",
-      cookie.serialize("BestAccessTokenEver", "deleted", {
+    response.setHeader("Set-Cookie", [
+      cookie.serialize("AccessToken", "deleted", {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
         maxAge: 0,
         path: "/",
-      })
-    );
-    response.setHeader(
-      "Set-Cookie",
-      cookie.serialize("BestIdTokenEver", "deleted", {
+      }),
+      cookie.serialize("IdToken", "deleted", {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
         maxAge: 0,
         path: "/",
-      })
-    );
+      }),
+    ]);
 
     response.redirect(url);
+  });
+  app.post("/search", formParser, (request, response) => {
+    const routeParameters = request.body.Search;
+    console.log(routeParameters);
+    db.collection("games")
+      .find()
+      .toArray()
+      .then((data) => {
+        const allGames = data.filter((element) => {
+          element.name;
+        });
+        console.log(allGames);
+      });
   });
 
 

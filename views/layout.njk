@@ -34,14 +34,14 @@
 
      <div class="collapse navbar-collapse" id="navbarColor02">
       <!-- Search bar start -->
-      <form class="d-flex" action="/search">
+      <form class="d-flex" method="POST" action="/search" >
         <input class="form-control me-sm-2" type="text" placeholder="OldGen,NewGen..." name="Search">
         <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
       </form>
       <!-- Search bar end -->
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link active" href="#">Connexion
+          <a class="nav-link active" href="/login">Connexion
             <span class="visually-hidden">(current)</span>
           </a>
         </li>
@@ -59,7 +59,7 @@
 
 <div class="btn-group"role="group" aria-label="Button group with nested dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-    Nitendo
+    Nintendo
   </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"style= "">
       <li><a class="dropdown-item" href="{{allPlatformsNameUnique[0]}}"><img src="{{urlPlatformsUnique[0]}}"></a>{{urlPlatformsUnique[0].name}}</li>
@@ -83,15 +83,15 @@
 
 
 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-  <button type="button" class="btn btn-success">Xbox</button>
-  <div class="btn-group" role="group">
-    <button id="btnGroupDrop3" type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-    <div class="dropdown-menu" aria-labelledby="btnGroupDrop3" style="">
-      <a class="dropdown-item" href="{{allPlatformsNameUnique[8]}}"><img src="{{urlPlatformsUnique[8]}}"></a>
-      <a class="dropdown-item" href="{{allPlatformsNameUnique[9]}}"><img src="{{urlPlatformsUnique[9]}}"></a>
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+  Xbox
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2"style= "">
 
-    </div>
-  </div>
+      <li><a class="dropdown-item" href="{{allPlatformsNameUnique[8]}}"><img src="{{urlPlatformsUnique[8]}}"></a></li>
+      <li><a class="dropdown-item" href="{{allPlatformsNameUnique[9]}}"><img src="{{urlPlatformsUnique[9]}}"></a></li>
+  </ul>
+
 </div>
 
 
@@ -115,7 +115,7 @@
 <button type="submit"> Mon Compte</button>
 </form>
 
-  {% endblock %}
+
 
   {% block content%}{% endblock %}
 
