@@ -311,13 +311,11 @@ export function makeApp(db: Db): core.Express {
   /// game details
   app.get("/:id/:slug", (request: Request, response: Response) => {
     const routeParameters = request.params.slug;
-    console.log(317, routeParameters);
     db.collection("games")
       .find()
       .toArray()
       .then((details) => {
         const slugSelected = request.params.slug;
-        console.log(321, slugSelected);
         const gameDetails = details.filter((element) => {
           return element.slug === slugSelected;
         });
