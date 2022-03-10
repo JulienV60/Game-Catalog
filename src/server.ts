@@ -43,7 +43,61 @@ export function makeApp(db: Db): core.Express {
         const urlPlatformsUnique = urlPlatformsdeux.filter(
           (value, index) => urlPlatformsdeux.indexOf(value) === index
         );
+        console.log(urlPlatformsUnique)
+
+        const myPlatform0 = data.filter((element) => {
+          return element.platform.name === allPlatformsNameUnique[0].replace("%20", " ");
+        });
+
+        console.log(myPlatform0)
+
+        const myPlatform1 = data.filter((element) => {
+          return element.platform.name === allPlatformsNameUnique[1].replace("%20", " ");
+        }).slice(2);
+
+        const myPlatform2 = data.filter((element) => {
+          return element.platform.name === allPlatformsNameUnique[2].replace("%20", " ");
+        }).slice(4);
+
+        const myPlatform3 = data.filter((element) => {
+          return element.platform.name === allPlatformsNameUnique[3].replace("%20", " ");
+        }).slice(4);
+
+        const myPlatform4 = data.filter((element) => {
+          return element.platform.name === allPlatformsNameUnique[4].replace("%20", " ");
+        }).slice(4);
+
+        const myPlatform5 = data.filter((element) => {
+          return element.platform.name === allPlatformsNameUnique[5].replace("%20", " ");
+        }).slice(4);
+
+        const myPlatform6 = data.filter((element) => {
+          return element.platform.name === allPlatformsNameUnique[6].replace("%20", " ");
+        }).slice(4);
+
+        const myPlatform7 = data.filter((element) => {
+          return element.platform.name === allPlatformsNameUnique[7].replace("%20", " ");
+        }).slice(4);
+
+        const myPlatform8 = data.filter((element) => {
+          return element.platform.name === allPlatformsNameUnique[8].replace("%20", " ");
+        }).slice(4);
+
+        const myPlatform9 = data.filter((element) => {
+          return element.platform.name === allPlatformsNameUnique[9].replace("%20", " ");
+        }).slice(4);
+
         response.render("index", {
+          myPlatform1,
+          myPlatform0,
+          myPlatform2,
+          myPlatform3,
+          myPlatform4,
+          myPlatform5,
+          myPlatform6,
+          myPlatform7,
+          myPlatform8,
+          myPlatform9,
           allPlatformsNameUnique,
           nameGames,
           urlPlatformsUnique,
@@ -167,6 +221,8 @@ export function makeApp(db: Db): core.Express {
       });
   });
 
+
+/// games list by platform
   app.get("/:id", (request: Request, response: Response) => {
     db.collection("games")
       .find()
