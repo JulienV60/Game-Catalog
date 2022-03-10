@@ -157,7 +157,6 @@ export function makeApp(db: Db): core.Express {
         }
         return true;
       } catch (error) {
-        console.error(error);
         return false;
       }
     }
@@ -186,7 +185,9 @@ export function makeApp(db: Db): core.Express {
         response.render("account", { name, nickname, picture });
       });
   });
-
+  app.get("/panier", async (request: Request, response: Response) => {
+    response.render("Panier");
+  });
   /// Logout + Destruction du cookie
   app.get("/logout", (request, response) => {
     const url = `${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=http://localhost:3000`;
