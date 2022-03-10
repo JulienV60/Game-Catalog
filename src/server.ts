@@ -25,7 +25,8 @@ export function makeApp(db: Db): core.Express {
 
   /// Home vers index
   app.get("/home", async (request: Request, response: Response) => {
-    db.collection("games")
+    await db
+      .collection("games")
       .find()
       .toArray()
       .then((data) => {
@@ -213,7 +214,7 @@ export function makeApp(db: Db): core.Express {
   app.get(`/account`, async (request: Request, response: Response) => {
     const token = cookie.parse(request.headers.cookie || "");
     const TokenAccess = token.AccessToken;
-    console.log(TokenAccess);
+
     fetch(`${process.env.AUTH0_DOMAIN}/userinfo`, {
       method: "Post",
       headers: {
@@ -222,7 +223,6 @@ export function makeApp(db: Db): core.Express {
     })
       .then((datajson) => datajson.json())
       .then((data) => {
-        console.log(data);
         const name = data.name;
         const nickname = data.nickname;
         const picture = data.picture;
@@ -253,15 +253,37 @@ export function makeApp(db: Db): core.Express {
     response.redirect(url);
   });
   app.post("/search", formParser, (request, response) => {
-    const routeParameters = request.body.Search;
-    db.collection("games")
-      .find()
-      .toArray()
-      .then((data) => {
-        const allGames = data.filter((element) => {
-          element.name;
-        });
-      });
+    const id = request.body.Search;
+    if (
+      id ===
+      db
+        .collection("games")
+        .find()
+        .toArray()
+        .then((data) => {
+          const id = request.body.Search;
+          const myPlatform = data.filter((element) => {
+            return element.platform.name === id.replace("%20", " ");
+          });
+        })
+    ) {
+      response.render("gamesbyplatforms");
+    }
+    if (
+      id ===
+      db
+        .collection("games")
+        .find()
+        .toArray()
+        .then((details) => {
+          const slugSelected = request.body.Search;
+          const gameDetails = details.filter((element) => {
+            return element.slug === slugSelected;
+          });
+        })
+    ) {
+      response.render("gamesdetais");
+    }
   });
 
   /// games list by platform
@@ -271,7 +293,7 @@ export function makeApp(db: Db): core.Express {
       .toArray()
       .then((data) => {
         const id = request.params.id;
-        const myPlatform = data.filter((element) => {
+        const myPlatform = data.map((element) => {
           return element.platform.name === id.replace("%20", " ");
         });
 
