@@ -42,7 +42,6 @@ export function makeApp(db: Db): core.Express {
         const urlPlatformsUnique = urlPlatformsdeux.filter(
           (value, index) => urlPlatformsdeux.indexOf(value) === index
         );
-        console.log(urlPlatformsUnique);
 
         const myPlatform0 = data.filter((element) => {
           return (
@@ -50,8 +49,6 @@ export function makeApp(db: Db): core.Express {
             allPlatformsNameUnique[0].replace("%20", " ")
           );
         });
-
-        console.log(myPlatform0);
 
         const myPlatform1 = data
           .filter((element) => {
@@ -188,7 +185,7 @@ export function makeApp(db: Db): core.Express {
   });
   /// Login
   app.get("/login", (request, response) => {
-    const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}`;
+    const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}&audience=${process.env.AUTH0_AUDIENCE}&scope=${process.env.AUTH0_SCOPES}`;
     response.redirect(url);
   });
   /// Private(Control si il y a un bien une connexion/inscription et que le token/cookie est bien présent)
@@ -216,6 +213,7 @@ export function makeApp(db: Db): core.Express {
   app.get(`/account`, async (request: Request, response: Response) => {
     const token = cookie.parse(request.headers.cookie || "");
     const TokenAccess = token.AccessToken;
+    console.log(TokenAccess);
     fetch(`${process.env.AUTH0_DOMAIN}/userinfo`, {
       method: "Post",
       headers: {
@@ -224,6 +222,7 @@ export function makeApp(db: Db): core.Express {
     })
       .then((datajson) => datajson.json())
       .then((data) => {
+        console.log(data);
         const name = data.name;
         const nickname = data.nickname;
         const picture = data.picture;
