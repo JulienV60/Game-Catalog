@@ -5,6 +5,7 @@ import { Db } from "mongodb";
 import fetch from "node-fetch";
 import nunjucks from "nunjucks";
 import { platform } from "os";
+import { isIfStatement } from "typescript";
 
 const jwksUrl = new URL(`${process.env.AUTH0_JSON_WEB_KEY_SET}`);
 
@@ -250,16 +251,19 @@ export function makeApp(db: Db): core.Express {
 
     response.redirect(url);
   });
-  app.post("/search", formParser, (request, response) => {
+  app.post("/search", formParser, async (request, response) => {
     const routeParameters = request.body.Search;
-    db.collection("games")
-      .find()
-      .toArray()
-      .then((data) => {
-        const allGames = data.filter((element) => {
-          element.name;
-        });
-      });
+    console.log(routeParameters);
+    const dataBase = await db.collection("games").find().toArray();
+    const searchGame = await dataBase.map((element) => {
+      return element.slug.split("-").join(" ");
+    });
+    if (searchGame.includes(routeParameters)) {
+      console.log("trouvé");
+      response.render("gamedetails", { searchGame });
+    } else {
+      console.error("404");
+    }
   });
 
   /// games list by platform
@@ -311,6 +315,7 @@ export function makeApp(db: Db): core.Express {
   /// game details
   app.get("/:id/:slug", (request: Request, response: Response) => {
     const routeParameters = request.params.slug;
+
     db.collection("games")
       .find()
       .toArray()
