@@ -5,40 +5,20 @@
 
 {# ------ GAME-DETAILS ------- #}
 
-{# {%for game in gameDetails %}
-  <img src="{{game.cover.url}}"/>
-  <h1> {{game.name}} </h1>
-  <p> {{game.platform.name}} </p>
-  <a href = "{{game.platform.platform_logo_url}}"><img src="{{game.platform.platform_logo_url}}"/></a>
-  <p> {{game.genres}} </p>
-  <div>
-      <button type="button">
-        Add to cart
-        <span><i class="fas fa-plus"></i></span>
-      </button>
-      <button type="button" >
-        Buy now
-        <span><i class="fas fa-shopping-cart"></i></span>
-      </button>
-  </div>
-   <p> {{game.summary}} </p>
-   {%else%}
-  <li> It is empty </li>
-{%endfor%} #}
-{# ------ GAME-DETAILS END ------- #}
 {%for game in gameDetails %}
-<div class="container">
+<div class="card bg-white rounded">
 <div class="row mx-auto">
   <div class="col-sm-4">
-      <img src="{{game.cover.url}}" class="img-fluid rounded-start" alt="{{game.cover.name}}">
+      <img src="{{game.cover.url}}" class="img-fluid rounded" alt="{{game.cover.name}}">
   </div>
 
 
-  <div class="col-sm-8 text-center bg-secondary" >
+  <div class="col-sm-8 text-center bg-white rounded" >
         <h5 class="card-title">{{game.name}} </h5>
-        <p class="card-title">{{game.platform.name}} <img class ="logo-navbar" src="{{game.platform.platform_logo_url}}" alt ="{{game.platform.name}}"/> </p>
-        <p class="card-text"> {{game.genres}} </p>
+        <p class="card-title"> <img class ="rounded" src="{{game.platform.platform_logo_url}}" alt ="{{game.platform.name}}"style="width:5rem"/> </p>
+        <p class="card-text"> Genre: {{game.genres}} </p>
       <div>
+
 
   <form method="get" action="/panier">
    <input type="submit" name="{{game._id}}" value="BUY NOW!" ><span><i class="fas fa-shopping-cart"></i></span></input>
@@ -50,6 +30,22 @@
   <div class="col-8 text-center bg-secondary">
      <p class="card-text"> {{game.summary}}</p>
   </div>
+
+       <button class="btn btn-secondary" type="button">
+        Add to cart
+        <span><i class="fas fa-plus"></i></span>
+        </button>
+        <button class="btn btn-secondary" type="button" >
+        Buy now
+        <span><i class="fas fa-shopping-cart"></i></span>
+        </button>
+    </div>
+      <div class="row justify-content-center bg-white rounded">
+        <div class="col-8 text-center ">
+          <p class="card-text"> {{game.summary}}</p>
+        </div>
+      </div>
+
   </div>
   </div>
 
@@ -57,6 +53,7 @@
   <li> It is empty </li>
 {%endfor%}
 
+{# ------ GAME-DETAILS END ------- #}
 {% endblock %}
 
 
