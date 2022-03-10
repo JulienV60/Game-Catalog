@@ -30,15 +30,10 @@
   <div class="col-8 text-center bg-secondary">
      <p class="card-text"> {{game.summary}}</p>
   </div>
+<form method="get" action="/panier">
+   <input type="submit" name="{{game._id}}" value="BUY NOW!" ><span><i class="fas fa-shopping-cart"></i></span></input>
+  </form>
 
-       <button class="btn btn-secondary" type="button">
-        Add to cart
-        <span><i class="fas fa-plus"></i></span>
-        </button>
-        <button class="btn btn-secondary" type="button" >
-        Buy now
-        <span><i class="fas fa-shopping-cart"></i></span>
-        </button>
     </div>
       <div class="row justify-content-center bg-white rounded">
         <div class="col-8 text-center ">
