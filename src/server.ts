@@ -1,10 +1,12 @@
+import cookie from "cookie";
 import express, { Request, Response } from "express";
 import * as core from "express-serve-static-core";
 import { Db } from "mongodb";
-import nunjucks from "nunjucks";
 import fetch from "node-fetch";
-import cookie from "cookie";
-import jose from "jose";
+import nunjucks from "nunjucks";
+import { platform } from "os";
+
+const jwksUrl = new URL(`${process.env.AUTH0_JSON_WEB_KEY_SET}`);
 
 export function makeApp(db: Db): core.Express {
   const app = express();
@@ -40,7 +42,109 @@ export function makeApp(db: Db): core.Express {
         const urlPlatformsUnique = urlPlatformsdeux.filter(
           (value, index) => urlPlatformsdeux.indexOf(value) === index
         );
+        console.log(urlPlatformsUnique);
+
+        const myPlatform0 = data.filter((element) => {
+          return (
+            element.platform.name ===
+            allPlatformsNameUnique[0].replace("%20", " ")
+          );
+        });
+
+        console.log(myPlatform0);
+
+        const myPlatform1 = data
+          .filter((element) => {
+            return (
+              element.platform.name ===
+              allPlatformsNameUnique[1].replace("%20", " ")
+            );
+          })
+          .slice(2);
+
+        const myPlatform2 = data
+          .filter((element) => {
+            return (
+              element.platform.name ===
+              allPlatformsNameUnique[2].replace("%20", " ")
+            );
+          })
+          .slice(4);
+
+        const myPlatform3 = data
+          .filter((element) => {
+            return (
+              element.platform.name ===
+              allPlatformsNameUnique[3].replace("%20", " ")
+            );
+          })
+          .slice(4);
+
+        const myPlatform4 = data
+          .filter((element) => {
+            return (
+              element.platform.name ===
+              allPlatformsNameUnique[4].replace("%20", " ")
+            );
+          })
+          .slice(4);
+
+        const myPlatform5 = data
+          .filter((element) => {
+            return (
+              element.platform.name ===
+              allPlatformsNameUnique[5].replace("%20", " ")
+            );
+          })
+          .slice(4);
+
+        const myPlatform6 = data
+          .filter((element) => {
+            return (
+              element.platform.name ===
+              allPlatformsNameUnique[6].replace("%20", " ")
+            );
+          })
+          .slice(4);
+
+        const myPlatform7 = data
+          .filter((element) => {
+            return (
+              element.platform.name ===
+              allPlatformsNameUnique[7].replace("%20", " ")
+            );
+          })
+          .slice(4);
+
+        const myPlatform8 = data
+          .filter((element) => {
+            return (
+              element.platform.name ===
+              allPlatformsNameUnique[8].replace("%20", " ")
+            );
+          })
+          .slice(4);
+
+        const myPlatform9 = data
+          .filter((element) => {
+            return (
+              element.platform.name ===
+              allPlatformsNameUnique[9].replace("%20", " ")
+            );
+          })
+          .slice(4);
+
         response.render("index", {
+          myPlatform1,
+          myPlatform0,
+          myPlatform2,
+          myPlatform3,
+          myPlatform4,
+          myPlatform5,
+          myPlatform6,
+          myPlatform7,
+          myPlatform8,
+          myPlatform9,
           allPlatformsNameUnique,
           nameGames,
           urlPlatformsUnique,
@@ -49,20 +153,37 @@ export function makeApp(db: Db): core.Express {
   });
 
   app.get("/callback", async (request: Request, response: Response) => {
-    const routeParameters = request.query.code;
-    console.log(routeParameters);
-    const jwksUrl = new URL(`${process.env.AUTH0_JSON_WEB_KEY_SET}`);
-    console.log(jwksUrl);
-    response.setHeader(
-      "Set-Cookie",
-      cookie.serialize("token", `${process.env.AUTH0_TOKEN}`, {
+    const queryCode = request.query.code;
+    const dataToken = await fetch(`${process.env.AUTH0_TOKEN}`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/x-www-form-urlencoded",
+      },
+      body: `grant_type=authorization_code&client_id=${process.env.AUTH0_CLIENT_ID}&client_secret=${process.env.AUTH0_CLIENT_SECRET}&code=${queryCode}&redirect_uri=http://localhost:3000/home`,
+    })
+      .then((data) => data.json())
+      .then((token) => token);
+
+    const access_token = dataToken.access_token;
+    const id_token = dataToken.id_token;
+
+    response.setHeader("Set-Cookie", [
+      cookie.serialize("AccessToken", access_token, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
         maxAge: 60 * 60,
         sameSite: "strict",
         path: "/",
-      })
-    );
+      }),
+      cookie.serialize("IdToken", id_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        maxAge: 60 * 60,
+        sameSite: "strict",
+        path: "/",
+      }),
+    ]);
+
     response.redirect("/home");
   });
   /// Login
@@ -70,18 +191,84 @@ export function makeApp(db: Db): core.Express {
     const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}`;
     response.redirect(url);
   });
-
-  app.get(`/account`, async (request: Request, response: Response) => {
-    const routeParameters = request.params;
-    console.log(routeParameters);
+  /// Private(Control si il y a un bien une connexion/inscription et que le token/cookie est bien présent)
+  app.get(`/private`, async (request: Request, response: Response) => {
+    async function userSession(request: Request): Promise<boolean> {
+      const token = cookie.parse(request.headers.cookie || "")[
+        "AccessToken" || "IdToken"
+      ];
+      try {
+        if (!token) {
+          return false;
+        }
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+    const isLogged: boolean = await userSession(request);
+    if (!isLogged) {
+      response.redirect("/");
+      return;
+    }
+    response.redirect("/account");
   });
-
-  /// Logout
+  app.get(`/account`, async (request: Request, response: Response) => {
+    const token = cookie.parse(request.headers.cookie || "");
+    const TokenAccess = token.AccessToken;
+    fetch(`${process.env.AUTH0_DOMAIN}/userinfo`, {
+      method: "Post",
+      headers: {
+        Authorization: `Bearer ${TokenAccess}`,
+      },
+    })
+      .then((datajson) => datajson.json())
+      .then((data) => {
+        console.log(data);
+        const name = data.name;
+        const nickname = data.nickname;
+        const picture = data.picture;
+        response.render("account", { name, nickname, picture });
+      });
+  });
+  app.get("/panier", async (request: Request, response: Response) => {
+    response.render("Panier");
+  });
+  /// Logout + Destruction du cookie
   app.get("/logout", (request, response) => {
     const url = `${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=http://localhost:3000`;
+    response.setHeader("Set-Cookie", [
+      cookie.serialize("AccessToken", "deleted", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        maxAge: 0,
+        path: "/",
+      }),
+      cookie.serialize("IdToken", "deleted", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        maxAge: 0,
+        path: "/",
+      }),
+    ]);
+
     response.redirect(url);
   });
+  app.post("/search", formParser, (request, response) => {
+    const routeParameters = request.body.Search;
+    console.log(routeParameters);
+    db.collection("games")
+      .find()
+      .toArray()
+      .then((data) => {
+        const allGames = data.filter((element) => {
+          element.name;
+        });
+        console.log(allGames);
+      });
+  });
 
+  /// games list by platform
   app.get("/:id", (request: Request, response: Response) => {
     db.collection("games")
       .find()
