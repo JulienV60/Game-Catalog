@@ -24,6 +24,7 @@
 <body>
 <header>
 <!-- NAVBAR START -->
+{%block top%}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Dev GAMES</a>
@@ -34,7 +35,7 @@
      <div class="collapse navbar-collapse" id="navbarColor02">
       <!-- Search bar start -->
       <form class="d-flex" method="POST" action="/search" >
-        <input class="form-control me-sm-2" type="text" placeholder="OldGen,NewGen..." name="Search">
+        <input class="form-control me-sm-2" type="text" placeholder="Enter a Game..." name="Search">
         <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
       </form>
       <!-- Search bar end -->
@@ -48,6 +49,19 @@
           <a class="nav-link active" href="/login">Connexion
             <span class="visually-hidden">(current)</span>
           </a>
+
+        </li>
+         <li class="nav-item">
+          <a class="nav-link active" href="/logout">Déconnexion
+            <span class="visually-hidden">(current)</span>
+          </a>
+
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/private">Mon Compte
+            <span class="visually-hidden">(current)</span>
+          </a>
+
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Panier</a>
@@ -57,7 +71,7 @@
   </div>
 </nav>
 <!-- NAVBAR-END -->
-
+{% endblock %}
 
 <!-- PLATFORMS -->
 
@@ -101,20 +115,9 @@
 
 </header>
 
-<!-- LOGIN/LOGOUT -->
 
-<form action="/login" method="get">
-<button type="submit"> Connexion</button>
-</form>
-<form action="/logout" method="get">
-<button type="submit"> Déconnexion</button>
-</form>
 
-<!-- LOGIN/LOGOUT END -->
 
-<form action="/private" method="get">
-<button type="submit"> Mon Compte</button>
-</form>
 
 
   {% block content%}{% endblock %}

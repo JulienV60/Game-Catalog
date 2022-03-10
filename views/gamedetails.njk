@@ -39,14 +39,10 @@
         <p class="card-title">{{game.platform.name}} <img class ="logo-navbar" src="{{game.platform.platform_logo_url}}" alt ="{{game.platform.name}}"/> </p>
         <p class="card-text"> {{game.genres}} </p>
       <div>
-       <button type="button">
-        Add to cart
-        <span><i class="fas fa-plus"></i></span>
-        </button>
-        <button type="button" >
-        Buy now
-        <span><i class="fas fa-shopping-cart"></i></span>
-        </button>
+
+  <form method="get" action="/panier">
+   <input type="submit" name="{{game._id}}" value="BUY NOW!" ><span><i class="fas fa-shopping-cart"></i></span></input>
+  </form>
   </div>
   </div>
 
