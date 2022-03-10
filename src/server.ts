@@ -185,7 +185,7 @@ export function makeApp(db: Db): core.Express {
   });
   /// Login
   app.get("/login", (request, response) => {
-    const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}`;
+    const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}&audience=${process.env.AUTH0_AUDIENCE}&scope=${process.env.AUTH0_SCOPES}`;
     response.redirect(url);
   });
   /// Private(Control si il y a un bien une connexion/inscription et que le token/cookie est bien présent)
