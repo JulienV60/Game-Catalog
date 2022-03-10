@@ -42,7 +42,6 @@ export function makeApp(db: Db): core.Express {
         const urlPlatformsUnique = urlPlatformsdeux.filter(
           (value, index) => urlPlatformsdeux.indexOf(value) === index
         );
-        console.log(urlPlatformsUnique);
 
         const myPlatform0 = data.filter((element) => {
           return (
@@ -50,8 +49,6 @@ export function makeApp(db: Db): core.Express {
             allPlatformsNameUnique[0].replace("%20", " ")
           );
         });
-
-        console.log(myPlatform0);
 
         const myPlatform1 = data
           .filter((element) => {
@@ -276,23 +273,79 @@ export function makeApp(db: Db): core.Express {
           return element.platform.name === id.replace("%20", " ");
         });
 
-        response.render("gamesbyplatforms", { myPlatform });
+        db.collection("games")
+          .find()
+          .toArray()
+          .then((data) => {
+            const nameGames = data.map((element) => element.name);
+            const allPlatforms = data.map((element) => element.platform);
+            const allPlatformsName = allPlatforms.map(
+              (element) => element.name
+            );
+            const allPlatformsNameUnique = allPlatformsName.filter(
+              (value, index) => allPlatformsName.indexOf(value) === index
+            );
+            const urlPlatforms = data.map((element) => element.platform);
+            const urlPlatformsdeux = urlPlatforms.map(
+              (element) => element.platform_logo_url
+            );
+            const urlPlatformsUnique = urlPlatformsdeux.filter(
+              (value, index) => urlPlatformsdeux.indexOf(value) === index
+            );
+
+            const myPlatform0 = data.filter((element) => {
+              return (
+                element.platform.name ===
+                allPlatformsNameUnique[0].replace("%20", " ")
+              );
+            });
+            response.render("gamesbyplatforms", {
+              myPlatform,
+              urlPlatformsUnique,
+              allPlatformsNameUnique,
+            });
+          });
       });
   });
 
+  /// game details
   app.get("/:id/:slug", (request: Request, response: Response) => {
+    const routeParameters = request.params.slug;
+    console.log(317, routeParameters);
     db.collection("games")
       .find()
       .toArray()
       .then((details) => {
         const slugSelected = request.params.slug;
+        console.log(321, slugSelected);
         const gameDetails = details.filter((element) => {
           return element.slug === slugSelected;
         });
-        response.render("gamedetails", {
-          gameDetails,
-          slugSelected,
-        });
+        db.collection("games")
+          .find()
+          .toArray()
+          .then((data) => {
+            const nameGames = data.map((element) => element.name);
+            const allPlatforms = data.map((element) => element.platform);
+            const allPlatformsName = allPlatforms.map(
+              (element) => element.name
+            );
+            const allPlatformsNameUnique = allPlatformsName.filter(
+              (value, index) => allPlatformsName.indexOf(value) === index
+            );
+            const urlPlatforms = data.map((element) => element.platform);
+            const urlPlatformsdeux = urlPlatforms.map(
+              (element) => element.platform_logo_url
+            );
+            const urlPlatformsUnique = urlPlatformsdeux.filter(
+              (value, index) => urlPlatformsdeux.indexOf(value) === index
+            );
+            response.render("gamedetails", {
+              gameDetails,
+              allPlatformsNameUnique,
+              urlPlatformsUnique,
+            });
+          });
       });
   });
 
