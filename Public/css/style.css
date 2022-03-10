@@ -1,3 +1,11 @@
+/* ------ Logo Navbar ------- */
+.logo-navbar {
+  width: 20%;
+  border-radius: 2rem;
+  background-color: black;
+  opacity: 70%;
+}
+
 /* ------ Footer ------- */
 footer {
   text-align: center;

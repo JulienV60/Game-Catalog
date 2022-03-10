@@ -6,10 +6,10 @@
 {% block content %}
 
 {%for item in myPlatform %}
-<a href = "/{{item._id}}/{{item.slug}}" class= "btn btn-secondary"><img src="{{item.cover.url}}"class="img-fluid"alt="{{item.name}}"/></a>
+<a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
 {# <p> {{item.name}}</p> #}
-{%else%}
-    <li> No games Found </li>
+
+
 {%endfor%}
 
 {% endblock %}
