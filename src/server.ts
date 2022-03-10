@@ -124,7 +124,6 @@ export function makeApp(db: Db): core.Express {
     })
       .then((datajson) => datajson.json())
       .then((data) => {
-        console.log(data);
         const name = data.name;
         const nickname = data.nickname;
         const picture = data.picture;
@@ -156,7 +155,6 @@ export function makeApp(db: Db): core.Express {
   });
   app.post("/search", formParser, (request, response) => {
     const routeParameters = request.body.Search;
-    console.log(routeParameters);
     db.collection("games")
       .find()
       .toArray()
@@ -164,7 +162,6 @@ export function makeApp(db: Db): core.Express {
         const allGames = data.filter((element) => {
           element.name;
         });
-        console.log(allGames);
       });
   });
 
