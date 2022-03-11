@@ -2,215 +2,265 @@
 
 
 {% block content %}
-<li><button>
-<a href="{{allPlatformsNameUnique[0]}}">
-<img src="{{urlPlatformsUnique[0]}}">
-</a>
-</li></button>
-<li>
-<div class="container">
-div
+<div class="parrallax"></div>
+<div class="container bg-white rounded"style="width:70%">
+<button type="button" class="btn-console">
+   <a href="{{allPlatformsNameUnique[0]}}"><img class ="logo-console-homepage" src="{{urlPlatformsUnique[0]}}"></a>
+</button>
 <div class="row">
   {%for item in myPlatform0 %}
     {% if loop.index0 < 4 %}
     <div class="col">
-      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <a href = "/{{item._id}}/{{item.slug}}">
+      {%if item.cover.url%}
+      <img class="cover" src="{{item.cover.url}}"/>
+      {%else%}
+      <section class="cover"><img class = "no-cover-logo"src="/images/nintendo-switch.svg"/><section>
+      {%endif%}
+      </a>
+      <p class="text-white text-center"> {{item.name}}</p>
     </div>
     {% endif %}
   {%endfor%}
   </div>
-</div>
-</li>
 
-<li><button>
-<a href="{{allPlatformsNameUnique[1]}}">
-<img src="{{urlPlatformsUnique[1]}}">
-</a>
+
+
+
+<button type="button" class="btn-console">
+    <a href="{{allPlatformsNameUnique[1]}}"><img class ="logo-console-homepage" src="{{urlPlatformsUnique[1]}}"></a>
 </button>
-</li>
-<li>
-<div class="container">
+
+{#
+<div class="container"> #}
 <div class="row">
   {%for item in myPlatform1 %}
     {% if loop.index0 < 4 %}
     <div class="col">
-      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <a href = "/{{item._id}}/{{item.slug}}">
+      {%if item.cover.url%}
+      <img class="cover" src="{{item.cover.url}}"/>
+      {%else%}
+      <section class="cover"><img class = "no-cover-logo"src="/images/nintendo-switch.svg"/><section>
+      {%endif%}
+      </a>
+      <p class="text-white text-center"> {{item.name}}</p>
     </div>
     {% endif %}
   {%endfor%}
-  </div>
+  {# </div> #}
 </div>
-</li>
 
-<li><button>
-<a href="{{allPlatformsNameUnique[2]}}">
-<img src="{{urlPlatformsUnique[2]}}">
-</a>
+
+<button>
+  <a href="{{allPlatformsNameUnique[2]}}">
+  <img class="logo-console-homepage" src="{{urlPlatformsUnique[2]}}">
+  </a>
 </button>
-</li>
-<li>
-<div class="container">
+
+
+
+{# <div class="container"> #}
 <div class="row">
   {%for item in myPlatform2 %}
     {% if loop.index0 < 4 %}
     <div class="col">
-      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <a href = "/{{item._id}}/{{item.slug}}">
+      {%if item.cover.url%}
+      <img class="cover" src="{{item.cover.url}}"/>
+      {%else%}
+      <section class="cover"><img class = "no-cover-logo"src="/images/nintendo-switch.svg"/><section>
+      {%endif%}
+      </a>
+      <p class="text-white text-center"> {{item.name}}</p>
     </div>
     {% endif %}
   {%endfor%}
-  </div>
+  {# </div> #}
 </div>
-</li>
 
-<li><button>
-<a href="{{allPlatformsNameUnique[3]}}">
-<img src="{{urlPlatformsUnique[3]}}">
-</a>
-</li></button>
-<li>
-<div class="container">
+
+<button>
+  <a href="{{allPlatformsNameUnique[3]}}">
+    <img class= "logo-console-homepage" src="{{urlPlatformsUnique[3]}}">
+  </a>
+</button>
+
+{# <div class="container"> #}
 <div class="row">
   {%for item in myPlatform3 %}
     {% if loop.index0 < 4 %}
     <div class="col">
-      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <a href = "/{{item._id}}/{{item.slug}}">
+      {%if item.cover.url%}
+      <img class="cover" src="{{item.cover.url}}"/>
+      {%else%}
+      <section class="cover"><img class = "no-cover-logo"src="/images/nintendo-switch.svg"/><section>
+      {%endif%}
+      </a>
+      <p class="text-white text-center"> {{item.name}}</p>
     </div>
     {% endif %}
   {%endfor%}
-  </div>
+  {# </div> #}
 </div>
-</li>
 
-<li><button>
-<a href="{{allPlatformsNameUnique[7]}}">
-<img src="{{urlPlatformsUnique[7]}}">
-</a>
-</li></button>
-<li>
-<div class="container">
+
+<button>
+  <a href="{{allPlatformsNameUnique[7]}}">
+    <img class= "logo-console-homepage" src="{{urlPlatformsUnique[7]}}">
+  </a>
+</button>
+{#
+<div class="container"> #}
 <div class="row">
   {%for item in myPlatform7 %}
     {% if loop.index0 < 4 %}
     <div class="col">
-      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <a href = "/{{item._id}}/{{item.slug}}">
+      {%if item.cover.url%}
+      <img class="cover" src="{{item.cover.url}}"/>
+      {%else%}
+      <section class="cover"><img class = "no-cover-logo"src="/images/nintendo-switch.svg"/><section>
+      {%endif%}
+      </a>
+      <p class="text-white text-center"> {{item.name}}</p>
     </div>
     {% endif %}
   {%endfor%}
-  </div>
+  {# </div> #}
 </div>
-</li>
 
-<li><button>
-<a href="{{allPlatformsNameUnique[4]}}">
-<img src="{{urlPlatformsUnique[4]}}">
+
+<button>
+  <a href="{{allPlatformsNameUnique[4]}}">
+  <img class= "logo-console-homepage" src="{{urlPlatformsUnique[4]}}">
 </a>
-</li></button>
-<li>
-<div class="container">
+</button>
+
+{# <div class="container"> #}
 <div class="row">
   {%for item in myPlatform4 %}
     {% if loop.index0 < 4 %}
     <div class="col">
-      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <a href = "/{{item._id}}/{{item.slug}}">
+       {%if item.cover.url%}
+      <img class="cover" src="{{item.cover.url}}"/>
+       {%else%}
+      <section class="cover"><img class = "no-cover-logo"src="/images/nintendo-switch.svg"/><section>
+      {%endif%}
+      </a>
+      <p class="text-white text-center"> {{item.name}}</p>
     </div>
     {% endif %}
   {%endfor%}
-  </div>
+  {# </div> #}
 </div>
-</li>
 
-<li><button>
-<a href="{{allPlatformsNameUnique[5]}}">
-<img src="{{urlPlatformsUnique[5]}}">
-</a>
-</li></button>
-<li>
-<div class="container">
+
+<button>
+  <a href="{{allPlatformsNameUnique[5]}}">
+    <img class= "logo-console-homepage" src="{{urlPlatformsUnique[5]}}">
+  </a>
+></button>
+
+{# <div class="container"> #}
 <div class="row">
   {%for item in myPlatform5 %}
     {% if loop.index0 < 4 %}
     <div class="col">
-      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <a href = "/{{item._id}}/{{item.slug}}">
+      {%if item.cover.url%}
+      <img class="cover" src="{{item.cover.url}}"/>
+      {%else%}
+      <section class="cover"><img class = "no-cover-logo"src="/images/nintendo-switch.svg"/><section>
+      {%endif%}
+      </a>
+      <p class="text-white text-center"> {{item.name}}</p>
     </div>
     {% endif %}
   {%endfor%}
-  </div>
+  {# </div> #}
 </div>
-</li>
 
-<li><button>
-<a href="{{allPlatformsNameUnique[6]}}">
-<img src="{{urlPlatformsUnique[6]}}">
-</a>
-</li></button>
-<li>
-<div class="container">
+
+<button>
+  <a href="{{allPlatformsNameUnique[6]}}">
+    <img class= "logo-console-homepage" src="{{urlPlatformsUnique[6]}}">
+  </a>
+</button>
+
+{# <div class="container"> #}
 <div class="row">
   {%for item in myPlatform6 %}
     {% if loop.index0 < 4 %}
     <div class="col">
-      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <a href = "/{{item._id}}/{{item.slug}}">
+      {%if item.cover.url%}
+      <img class="cover" src="{{item.cover.url}}"/>
+      {%else%}
+      <section class="cover"><img class = "no-cover-logo"src="/images/nintendo-switch.svg"/><section>
+      {%endif%}
+      </a>
+      <p class="text-white text-center"> {{item.name}}</p>
     </div>
     {% endif %}
   {%endfor%}
-  </div>
+  {# </div> #}
 </div>
-</li>
 
-<li><button>
-<a href="{{allPlatformsNameUnique[8]}}">
-<img src="{{urlPlatformsUnique[8]}}">
-</a>
-</li></button>
-<li>
-<div class="container">
+
+<button>
+  <a href="{{allPlatformsNameUnique[8]}}">
+    <img class= "logo-console-homepage" src="{{urlPlatformsUnique[8]}}">
+  </a>
+</button>
+
+{# <div class="container"> #}
 <div class="row">
   {%for item in myPlatform8 %}
     {% if loop.index0 < 4 %}
     <div class="col">
-      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <a href = "/{{item._id}}/{{item.slug}}">
+      {%if item.cover.url%}
+      <img class="cover" src="{{item.cover.url}}"/>
+      {%else%}
+      <section class="cover"><img class = "no-cover-logo"src="/images/nintendo-switch.svg"/><section>
+      {%endif%}
+      </a>
+      <p class="text-white text-center"> {{item.name}}</p>
     </div>
     {% endif %}
   {%endfor%}
-  </div>
+  {# </div> #}
 </div>
-</li>
 
-<li><button>
+
+<button>
 <a href="{{allPlatformsNameUnique[9]}}">
-<img src="{{urlPlatformsUnique[9]}}">
+<img class= "logo-console-homepage" src="{{urlPlatformsUnique[9]}}">
 </a>
-</li></button>
-<li>
-<div class="container">
+</button>
+
+{# <div class="container"> #}
 <div class="row">
   {%for item in myPlatform9 %}
     {% if loop.index0 < 4 %}
     <div class="col">
-      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <a href = "/{{item._id}}/{{item.slug}}">
+      {%if item.cover.url%}
+      <img class="cover" src="{{item.cover.url}}"/>
+      {%else%}
+      <section class="cover"><img class = "no-cover-logo"src="/images/nintendo-switch.svg"/><section>
+      {%endif%}
+      </a>
+      <p class="text-white text-center"> {{item.name}}</p>
     </div>
     {% endif %}
   {%endfor%}
   </div>
 </div>
-</li>
-
-
-
-
-
-
-
+{# </div> #}
 
 {% endblock %}
 
