@@ -409,6 +409,7 @@ export function makeApp(db: Db): core.Express {
             const allPlatformsNameUnique = allPlatformsName.filter(
               (value, index) => allPlatformsName.indexOf(value) === index
             );
+
             const urlPlatforms = data.map((element) => element.platform);
             const urlPlatformsdeux = urlPlatforms.map(
               (element) => element.platform_logo_url
@@ -416,6 +417,7 @@ export function makeApp(db: Db): core.Express {
             const urlPlatformsUnique = urlPlatformsdeux.filter(
               (value, index) => urlPlatformsdeux.indexOf(value) === index
             );
+            console.log(allPlatformsNameUnique);
             response.render("gamedetails", {
               gameDetails,
               allPlatformsNameUnique,
