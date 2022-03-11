@@ -23,7 +23,11 @@
 
 
   <form method="get" action="/panier">
+  {% if isLogged==false %}
+   <button disabled="disabled">Buy now</button>
+   {%else%}
    <button class="bg bg-secondary rounded" type="submit" name="{{game._id}}" > <span> BUY NOW! <i class="fas fa-shopping-cart"></i></span></button>
+   {%endif%}
   </form>
   </div>
   </div>
