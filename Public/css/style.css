@@ -65,6 +65,14 @@ html {
   background-color: darkgray;
 }
 
+/* ------ Game-details page ------- */
+.container-game-details {
+  width: 70%;
+  height: 300px;
+  margin: 0 auto;
+  padding-top: 6%;
+}
+
 /* ------ Footer ------- */
 footer {
   background-color: black;
