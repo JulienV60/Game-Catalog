@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block content %}
+<div class="container p-3 my-3  text-white ">
  <div class="row align-self-end">
   {%for item in myPlatform %}
     {% if loop.index0 < 5 %}
@@ -24,6 +25,7 @@
     </div>
     {% endif %}
   {%endfor%}
+  </div>
   </div>
 
 {% endblock %}
