@@ -4,11 +4,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="account-color-info"
+<div class="account-color-info">
 <h1>MES INFOS</h1>
 
-<h3>Nom:{{nickname}}</h3>
-<h3>Adresse mail:{{name}}</h3>
+<h3>{{nickname}}</h3>
+<h3> {{name}}</h3>
 <img src="{{picture}}"></img>
 </div>
 
@@ -16,9 +16,9 @@
 
 <h1>MES ACHATS</h1>
 
-<h3>{{name}}</h3>
-<h3>{{platform.name}}</h3>
-<img src="{{cover.url}}"></img>
+<h3>{{achatname}}</h3>
+<h3>{{achatplatform.name}}</h3>
+<img src="{{achatcover.url}}"></img>
 </div>
 {% endblock %}
 

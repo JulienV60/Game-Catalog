@@ -226,7 +226,11 @@ export function makeApp(db: Db): core.Express {
         const name = data.name;
         const nickname = data.nickname;
         const picture = data.picture;
-        response.render("account", { name, nickname, picture });
+        response.render("account", {
+          name,
+          nickname,
+          picture,
+        });
       });
   });
   app.get(
@@ -254,10 +258,31 @@ export function makeApp(db: Db): core.Express {
       };
       const idObject = new ObjectId(idPanierIndex);
       const url = await db.collection<Game>("games").findOne({ _id: idObject });
-      const name = url?.name;
-      const platform = url?.platform;
-      const cover = url?.cover;
-      response.render("account", { name, platform, cover });
+      const achatname = url?.name;
+      const achatplatform = url?.platform;
+      const achatcover = url?.cover;
+      const token = cookie.parse(request.headers.cookie || "");
+      const TokenAccess = token.AccessToken;
+      fetch(`${process.env.AUTH0_DOMAIN}/userinfo`, {
+        method: "Post",
+        headers: {
+          Authorization: `Bearer ${TokenAccess}`,
+        },
+      })
+        .then((datajson) => datajson.json())
+        .then((data) => {
+          const name = data.name;
+          const nickname = data.nickname;
+          const picture = data.picture;
+          response.render("account", {
+            name,
+            nickname,
+            picture,
+            achatname,
+            achatplatform,
+            achatcover,
+          });
+        });
     }
   );
 
