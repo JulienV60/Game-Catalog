@@ -1,12 +1,11 @@
 import cookie from "cookie";
 import express, { Request, Response } from "express";
 import * as core from "express-serve-static-core";
-import { cpSync } from "fs";
+import { cp } from "fs";
+
 import { Db, ObjectId } from "mongodb";
 import fetch from "node-fetch";
 import nunjucks from "nunjucks";
-import { platform } from "os";
-import { isIfStatement } from "typescript";
 
 const jwksUrl = new URL(`${process.env.AUTH0_JSON_WEB_KEY_SET}`);
 
@@ -63,7 +62,6 @@ export function makeApp(db: Db): core.Express {
     const allPlatformsNameUnique = allPlatformsName.filter(
       (value, index) => allPlatformsName.indexOf(value) === index
     );
-    console.log("hello there");
     const urlPlatforms = data.map((element) => element.platform);
     const urlPlatformsdeux = urlPlatforms.map(
       (element) => element.platform_logo_url
@@ -401,13 +399,32 @@ export function makeApp(db: Db): core.Express {
       .join(" ")
       .split(" ")
       .join("-");
-
     const dataBase = await db
       .collection("games")
       .findOne({ slug: routeParametersFormated.toLowerCase() });
     gameDetails.push(dataBase);
+    const data = await db.collection("games").find().toArray();
+    const nameGames = data.map((element) => element.name);
+    const allPlatforms = data.map((element) => element.platform);
+    const allPlatformsName = allPlatforms.map((element) => element.name);
+    const allPlatformsNameUnique = allPlatformsName.filter(
+      (value, index) => allPlatformsName.indexOf(value) === index
+    );
 
-    response.render("gamedetails", { gameDetails, isLogged });
+    const urlPlatforms = data.map((element) => element.platform);
+    const urlPlatformsdeux = urlPlatforms.map(
+      (element) => element.platform_logo_url
+    );
+    const urlPlatformsUnique = urlPlatformsdeux.filter(
+      (value, index) => urlPlatformsdeux.indexOf(value) === index
+    );
+    response.render("gamedetails", {
+      gameDetails,
+      isLogged,
+      nameGames,
+      allPlatformsNameUnique,
+      urlPlatformsUnique,
+    });
   });
 
   /// games list by platform
