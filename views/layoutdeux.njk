@@ -25,14 +25,14 @@
 <header>
 <!-- NAVBAR START -->
 {%block top%}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-black bg-black ">
   <div class="container-fluid ">
-    <a class="navbar-brand" href="/">Dev GAMES</a>
+    <a class="navbar-brand text-white" href="/">Dev GAMES</a>
     <!-- Search bar start -->
       <form class="d-flex" method="POST" action="/search" >
 
         <input class="search-bar" type="text" placeholder="Enter a Game..." name="Search">
-        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit"> <img class= "text-white" src="/images/search.svg" alt="search bar"></img> </button>
 
 
       </form>
@@ -40,25 +40,23 @@
      <div class="nav justify-content-end" id="navbarColor02">
       <ul class="navbar-nav me-auto ">
         <li class="nav-item">
-          <a class="nav-link active" href="/login"><i class="fas fa-user"></i>
-            <span class="visually-hidden">(current)</span>
-          </a>
+
+          <form class="bg-light" action="/login" method="get">
+            <button class = "bg-black text-white border border-black"type="submit"> Connexion</button>
+          </form>
 
         </li>
          <li class="nav-item">
-          <a class="nav-link active" href="/logout">Déconnexion
-            <span class="visually-hidden">(current)</span>
-          </a>
+            <form class="bg-light" action="/logout" method="get">
+                <button class = "bg-black text-white border border-black" type="submit"> Déconnexion</button>
+            </form>
 
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="/private">Mon Compte
-            <span class="visually-hidden">(current)</span>
-          </a>
+          <form class="bg-light" action="/private" method="get">
+            <button class = "bg-black text-white border border-black" type="submit"> Mon Compte</button>
+          </form>
 
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#"> <i class="fas fa-shopping-cart"></i></a>
         </li>
       <ul>
   </div>
@@ -74,23 +72,42 @@
 
 <!-- PLATFORMS END -->
 
-
-
-
-<form class="btn-group" action="/login" method="get">
-<button type="submit"> Connexion</button>
-</form>
-<form class="btn-group" action="/logout" method="get">
-<button type="submit"> Déconnexion</button>
-</form>
-
-
-
-
-<form class="btn-group" action="/private" method="get">
-<button type="submit"> Mon Compte</button>
-</form>
+<div class="bg-ligth">
+<div class="btn-group"role="group" aria-label="Button group with nested dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+    <img src="/images/nintendo-switch.svg"</img> Nintendo
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"style= "">
+      <li><a class="dropdown-item" href="{{allPlatformsNameUnique[0]}}"><img class ="logo-navbar" src="{{urlPlatformsUnique[0]}}"> {{allPlatformsNameUnique[0]}}</a></li>
+      <li><a class="dropdown-item" href="{{allPlatformsNameUnique[1]}}"><img class ="logo-navbar" src="{{urlPlatformsUnique[1]}}"> {{allPlatformsNameUnique[1]}}</a></li>
+      <li><a class="dropdown-item" href="{{allPlatformsNameUnique[2]}}"><img class ="logo-navbar" src="{{urlPlatformsUnique[2]}}"> {{allPlatformsNameUnique[2]}}</a></li>
+      <li><a class="dropdown-item" href="{{allPlatformsNameUnique[3]}}"><img class ="logo-navbar" src="{{urlPlatformsUnique[3]}}"> {{allPlatformsNameUnique[3]}}</a></li>
+      <li><a class="dropdown-item" href="{{allPlatformsNameUnique[7]}}"><img class ="logo-navbar" src="{{urlPlatformsUnique[7]}}"> {{allPlatformsNameUnique[7]}}</a></li>
+  </ul>
 </div>
+
+<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="fab fa-playstation"></i> Playstation
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2"style= "">
+      <li><a class="dropdown-item" href="{{allPlatformsNameUnique[4]}}"><img class ="logo-navbar" src="{{urlPlatformsUnique[4]}}"> {{allPlatformsNameUnique[4]}}</a></li>
+      <li><a class="dropdown-item" href="{{allPlatformsNameUnique[5]}}"><img class ="logo-navbar" src="{{urlPlatformsUnique[5]}}"> {{allPlatformsNameUnique[5]}}</a></li>
+      <li><a class="dropdown-item" href="{{allPlatformsNameUnique[6]}}"><img class ="logo-navbar" src="{{urlPlatformsUnique[6]}}"> {{allPlatformsNameUnique[6]}}</a></li>
+  </ul>
+</div>
+
+
+<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button"id="dropdownMenuButton1"data-bs-toggle="dropdown" aria-expanded="false"><i class="fab fa-xbox"></i> Xbox</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2"style= "">
+      <li><a class="dropdown-item" href="{{allPlatformsNameUnique[8]}}"><img class ="logo-navbar" src="{{urlPlatformsUnique[8]}}"> {{allPlatformsNameUnique[8]}}</a></li>
+      <li><a class="dropdown-item" href="{{allPlatformsNameUnique[9]}}"><img class ="logo-navbar" src="{{urlPlatformsUnique[9]}}"> {{allPlatformsNameUnique[9]}}</a></li>
+    </ul>
+</div>
+
+
+
 <!-- LOGIN/LOGOUT END -->
 </header>
 <section class= "parallax"></section>
