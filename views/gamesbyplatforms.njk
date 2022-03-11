@@ -4,10 +4,27 @@
 {% endblock %}
 
 {% block content %}
- {%for item in myPlatform %}
-  <div class="container justify-content-center" style="width: 18rem ">
-    <a href = "/{{item._id}}/{{item.slug}}"><img class="cover" src="{{item.cover.url}}"/></a>
-   </div>
- {%endfor%}
+ <div class="row align-self-end">
+  {%for item in myPlatform %}
+    {% if loop.index0 < 5 %}
+    <div class="col align-self-end view overlay zoom" >
+      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"  alt="smaple image" class = "cover"/></a>
+      <p> <a href = "/{{item._id}}/{{item.slug}}" class="link-light"> {{item.name}} </a></p>
+    </div>
+    {% endif %}
+  {%endfor%}
+  </div>
+
+  <div class="row align-self-end">
+  {%for item in myPlatform %}
+    {% if loop.index0 > 4 %}
+    <div class="col align-self-end view overlay zoom" >
+      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"  alt="smaple image" class = "cover"/></a>
+      <p> <a href = "/{{item._id}}/{{item.slug}}" class="link-light"> {{item.name}} </a></p>
+    </div>
+    {% endif %}
+  {%endfor%}
+  </div>
+
 {% endblock %}
 
