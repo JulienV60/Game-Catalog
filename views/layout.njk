@@ -32,7 +32,7 @@
       <form class="d-flex" method="POST" action="/search" >
 
         <input class="search-bar" type="text" placeholder="Enter a Game..." name="Search">
-        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit"> <img class= "text-white" src="/images/search.svg" alt="search bar"></img> </button>
 
 
       </form>
@@ -40,24 +40,22 @@
      <div class="nav justify-content-end" id="navbarColor02">
       <ul class="navbar-nav me-auto ">
         <li class="nav-item">
-          <a class="nav-link active" href="/login"><i class="fas fa-user text-white"></i>
-            <span class="visually-hidden">(current)</span>
-          </a>
+
+          <form class="bg-light" action="/login" method="get">
+            <button class = "bg-black text-white border border-black"type="submit"> Connexion</button>
+          </form>
 
         </li>
          <li class="nav-item">
-          <a class="nav-link active text-white" href="/logout">Déconnexion
-            <span class="visually-hidden">(current)</span>
-          </a>
+            <form class="bg-light" action="/logout" method="get">
+                <button class = "bg-black text-white border border-black" type="submit"> Déconnexion</button>
+            </form>
 
         </li>
         <li class="nav-item">
-          <a class="nav-link active text-white" href="/private">Mon Compte
-            <span class="visually-hidden">(current)</span>
-          </a>
-
-        </li>
-        <li class="nav-item">
+          <form class="bg-light" action="/private" method="get">
+            <button class = "bg-black text-white border border-black" type="submit"> Mon Compte</button>
+          </form>
 
         </li>
       <ul>
@@ -110,20 +108,20 @@
 
 
 
-<form class="btn-group" action="/login" method="get">
+{# <form class="btn-group" action="/login" method="get">
 <button type="submit"> Connexion</button>
-</form>
-<form class="btn-group" action="/logout" method="get">
+</form> #}
+{# <form class="btn-group" action="/logout" method="get">
 <button type="submit"> Déconnexion</button>
-</form>
+</form> #}
 
 
 
 
-<form class="btn-group" action="/private" method="get">
+{# <form class="btn-group" action="/private" method="get">
 <button type="submit"> Mon Compte</button>
 </form>
-</div>
+</div> #}
 <!-- LOGIN/LOGOUT END -->
 </header>
 <section class= "parallax"></section>
