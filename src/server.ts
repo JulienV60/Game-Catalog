@@ -21,134 +21,159 @@ export function makeApp(db: Db): core.Express {
   app.set("view engine", "njk");
 
   ///Départ serveur vers home
-  app.get("/", (request: Request, response: Response) => {
+  app.get("/", async (request: Request, response: Response) => {
+    async function userSession(request: Request): Promise<boolean> {
+      const token = cookie.parse(request.headers.cookie || "")[
+        "AccessToken" || "IdToken"
+      ];
+      try {
+        if (!token) {
+          return false;
+        }
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+    const isLogged: boolean = await userSession(request);
+
     response.redirect("/home");
   });
 
   /// Home vers index
   app.get("/home", async (request: Request, response: Response) => {
-    db.collection("games")
-      .find()
-      .toArray()
-      .then((data) => {
-        const nameGames = data.map((element) => element.name);
-        const allPlatforms = data.map((element) => element.platform);
-        const allPlatformsName = allPlatforms.map((element) => element.name);
-        const allPlatformsNameUnique = allPlatformsName.filter(
-          (value, index) => allPlatformsName.indexOf(value) === index
+    const data = await db.collection("games").find().toArray();
+    async function userSession(request: Request): Promise<boolean> {
+      const token = cookie.parse(request.headers.cookie || "")[
+        "AccessToken" || "IdToken"
+      ];
+      try {
+        if (!token) {
+          return false;
+        }
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+    const isLogged: boolean = await userSession(request);
+    const nameGames = data.map((element) => element.name);
+    const allPlatforms = data.map((element) => element.platform);
+    const allPlatformsName = allPlatforms.map((element) => element.name);
+    const allPlatformsNameUnique = allPlatformsName.filter(
+      (value, index) => allPlatformsName.indexOf(value) === index
+    );
+    const urlPlatforms = data.map((element) => element.platform);
+    const urlPlatformsdeux = urlPlatforms.map(
+      (element) => element.platform_logo_url
+    );
+    const urlPlatformsUnique = urlPlatformsdeux.filter(
+      (value, index) => urlPlatformsdeux.indexOf(value) === index
+    );
+
+    const myPlatform0 = data.filter((element) => {
+      return (
+        element.platform.name === allPlatformsNameUnique[0].replace("%20", " ")
+      );
+    });
+
+    const myPlatform1 = data
+      .filter((element) => {
+        return (
+          element.platform.name ===
+          allPlatformsNameUnique[1].replace("%20", " ")
         );
-        const urlPlatforms = data.map((element) => element.platform);
-        const urlPlatformsdeux = urlPlatforms.map(
-          (element) => element.platform_logo_url
+      })
+      .slice(2);
+
+    const myPlatform2 = data
+      .filter((element) => {
+        return (
+          element.platform.name ===
+          allPlatformsNameUnique[2].replace("%20", " ")
         );
-        const urlPlatformsUnique = urlPlatformsdeux.filter(
-          (value, index) => urlPlatformsdeux.indexOf(value) === index
+      })
+      .slice(4);
+
+    const myPlatform3 = data
+      .filter((element) => {
+        return (
+          element.platform.name ===
+          allPlatformsNameUnique[3].replace("%20", " ")
         );
+      })
+      .slice(4);
 
-        const myPlatform0 = data.filter((element) => {
-          return (
-            element.platform.name ===
-            allPlatformsNameUnique[0].replace("%20", " ")
-          );
-        });
+    const myPlatform4 = data
+      .filter((element) => {
+        return (
+          element.platform.name ===
+          allPlatformsNameUnique[4].replace("%20", " ")
+        );
+      })
+      .slice(4);
 
-        const myPlatform1 = data
-          .filter((element) => {
-            return (
-              element.platform.name ===
-              allPlatformsNameUnique[1].replace("%20", " ")
-            );
-          })
-          .slice(2);
+    const myPlatform5 = data
+      .filter((element) => {
+        return (
+          element.platform.name ===
+          allPlatformsNameUnique[5].replace("%20", " ")
+        );
+      })
+      .slice(4);
 
-        const myPlatform2 = data
-          .filter((element) => {
-            return (
-              element.platform.name ===
-              allPlatformsNameUnique[2].replace("%20", " ")
-            );
-          })
-          .slice(4);
+    const myPlatform6 = data
+      .filter((element) => {
+        return (
+          element.platform.name ===
+          allPlatformsNameUnique[6].replace("%20", " ")
+        );
+      })
+      .slice(4);
 
-        const myPlatform3 = data
-          .filter((element) => {
-            return (
-              element.platform.name ===
-              allPlatformsNameUnique[3].replace("%20", " ")
-            );
-          })
-          .slice(4);
+    const myPlatform7 = data
+      .filter((element) => {
+        return (
+          element.platform.name ===
+          allPlatformsNameUnique[7].replace("%20", " ")
+        );
+      })
+      .slice(4);
 
-        const myPlatform4 = data
-          .filter((element) => {
-            return (
-              element.platform.name ===
-              allPlatformsNameUnique[4].replace("%20", " ")
-            );
-          })
-          .slice(4);
+    const myPlatform8 = data
+      .filter((element) => {
+        return (
+          element.platform.name ===
+          allPlatformsNameUnique[8].replace("%20", " ")
+        );
+      })
+      .slice(4);
 
-        const myPlatform5 = data
-          .filter((element) => {
-            return (
-              element.platform.name ===
-              allPlatformsNameUnique[5].replace("%20", " ")
-            );
-          })
-          .slice(4);
+    const myPlatform9 = data
+      .filter((element) => {
+        return (
+          element.platform.name ===
+          allPlatformsNameUnique[9].replace("%20", " ")
+        );
+      })
+      .slice(4);
 
-        const myPlatform6 = data
-          .filter((element) => {
-            return (
-              element.platform.name ===
-              allPlatformsNameUnique[6].replace("%20", " ")
-            );
-          })
-          .slice(4);
-
-        const myPlatform7 = data
-          .filter((element) => {
-            return (
-              element.platform.name ===
-              allPlatformsNameUnique[7].replace("%20", " ")
-            );
-          })
-          .slice(4);
-
-        const myPlatform8 = data
-          .filter((element) => {
-            return (
-              element.platform.name ===
-              allPlatformsNameUnique[8].replace("%20", " ")
-            );
-          })
-          .slice(4);
-
-        const myPlatform9 = data
-          .filter((element) => {
-            return (
-              element.platform.name ===
-              allPlatformsNameUnique[9].replace("%20", " ")
-            );
-          })
-          .slice(4);
-
-        response.render("index", {
-          myPlatform1,
-          myPlatform0,
-          myPlatform2,
-          myPlatform3,
-          myPlatform4,
-          myPlatform5,
-          myPlatform6,
-          myPlatform7,
-          myPlatform8,
-          myPlatform9,
-          allPlatformsNameUnique,
-          nameGames,
-          urlPlatformsUnique,
-        });
-      });
+    response.render("index", {
+      myPlatform1,
+      myPlatform0,
+      myPlatform2,
+      myPlatform3,
+      myPlatform4,
+      myPlatform5,
+      myPlatform6,
+      myPlatform7,
+      myPlatform8,
+      myPlatform9,
+      allPlatformsNameUnique,
+      nameGames,
+      urlPlatformsUnique,
+      isLogged,
+    });
   });
 
   app.get("/callback", async (request: Request, response: Response) => {
@@ -212,7 +237,22 @@ export function makeApp(db: Db): core.Express {
     }
     response.redirect("/account");
   });
+
   app.get(`/account`, async (request: Request, response: Response) => {
+    async function userSession(request: Request): Promise<boolean> {
+      const token = cookie.parse(request.headers.cookie || "")[
+        "AccessToken" || "IdToken"
+      ];
+      try {
+        if (!token) {
+          return false;
+        }
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+    const isLogged: boolean = await userSession(request);
     const token = cookie.parse(request.headers.cookie || "");
     const TokenAccess = token.AccessToken;
     fetch(`${process.env.AUTH0_DOMAIN}/userinfo`, {
@@ -230,6 +270,7 @@ export function makeApp(db: Db): core.Express {
           name,
           nickname,
           picture,
+          isLogged,
         });
       });
   });
@@ -237,6 +278,20 @@ export function makeApp(db: Db): core.Express {
     "/panier",
     formParser,
     async (request: Request, response: Response) => {
+      async function userSession(request: Request): Promise<boolean> {
+        const token = cookie.parse(request.headers.cookie || "")[
+          "AccessToken" || "IdToken"
+        ];
+        try {
+          if (!token) {
+            return false;
+          }
+          return true;
+        } catch (error) {
+          return false;
+        }
+      }
+      const isLogged: boolean = await userSession(request);
       const routeParameters = request.query;
       const idPanier = Object.keys(routeParameters).reverse();
       const idPanierIndex = idPanier[0];
@@ -281,6 +336,7 @@ export function makeApp(db: Db): core.Express {
             achatname,
             achatplatform,
             achatcover,
+            isLogged,
           });
         });
     }
@@ -313,6 +369,20 @@ export function makeApp(db: Db): core.Express {
     response.redirect(url);
   });
   app.post("/search", formParser, async (request, response) => {
+    async function userSession(request: Request): Promise<boolean> {
+      const token = cookie.parse(request.headers.cookie || "")[
+        "AccessToken" || "IdToken"
+      ];
+      try {
+        if (!token) {
+          return false;
+        }
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+    const isLogged: boolean = await userSession(request);
     const routeParameters = request.body.Search;
     const gameDetails = [];
     const routeParametersFormated: string = routeParameters
@@ -336,11 +406,25 @@ export function makeApp(db: Db): core.Express {
       .findOne({ slug: routeParametersFormated.toLowerCase() });
     gameDetails.push(dataBase);
 
-    response.render("gamedetails", { gameDetails });
+    response.render("gamedetails", { gameDetails, isLogged });
   });
 
   /// games list by platform
-  app.get("/:id", (request: Request, response: Response) => {
+  app.get("/:id", async (request: Request, response: Response) => {
+    async function userSession(request: Request): Promise<boolean> {
+      const token = cookie.parse(request.headers.cookie || "")[
+        "AccessToken" || "IdToken"
+      ];
+      try {
+        if (!token) {
+          return false;
+        }
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+    const isLogged: boolean = await userSession(request);
     db.collection("games")
       .find()
       .toArray()
@@ -380,13 +464,28 @@ export function makeApp(db: Db): core.Express {
               myPlatform,
               urlPlatformsUnique,
               allPlatformsNameUnique,
+              isLogged,
             });
           });
       });
   });
 
   /// game details
-  app.get("/:id/:slug", (request: Request, response: Response) => {
+  app.get("/:id/:slug", async (request: Request, response: Response) => {
+    async function userSession(request: Request): Promise<boolean> {
+      const token = cookie.parse(request.headers.cookie || "")[
+        "AccessToken" || "IdToken"
+      ];
+      try {
+        if (!token) {
+          return false;
+        }
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+    const isLogged: boolean = await userSession(request);
     const routeParameters = request.params.slug;
 
     db.collection("games")
@@ -417,11 +516,11 @@ export function makeApp(db: Db): core.Express {
             const urlPlatformsUnique = urlPlatformsdeux.filter(
               (value, index) => urlPlatformsdeux.indexOf(value) === index
             );
-            console.log(allPlatformsNameUnique);
             response.render("gamedetails", {
               gameDetails,
               allPlatformsNameUnique,
               urlPlatformsUnique,
+              isLogged,
             });
           });
       });
