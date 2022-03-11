@@ -72,3 +72,11 @@ footer {
   padding-top: 5em;
   box-shadow: 90px 0 100px 100px black;
 }
+.account-color-info {
+  color: white;
+  padding-bottom: 3rem;
+}
+.account-color-achat {
+  color: white;
+  padding-top: 1rem;
+}
