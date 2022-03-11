@@ -51,7 +51,7 @@ html {
   display: block;
   margin: 0 auto;
   padding-top: 50%;
-  width: 2em;
+  width: 4em;
 }
 
 .logo-console-homepage {
@@ -64,7 +64,6 @@ html {
   border-radius: 10%;
   background-color: darkgray;
 }
-
 
 /* ------ Footer ------- */
 footer {
@@ -82,4 +81,3 @@ footer {
   color: white;
   padding-top: 1rem;
 }
-
