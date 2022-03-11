@@ -42,13 +42,22 @@
         <li class="nav-item">
 
           <form class="bg-light" action="/login" method="get">
+            {%if isLogged==true %}
+            <button disabled="disabled">Connexion</button>
+            {%else%}
             <button class = "bg-black text-white border border-black"type="submit"> Connexion</button>
+            {%endif %}
           </form>
 
         </li>
          <li class="nav-item">
+
             <form class="bg-light" action="/logout" method="get">
+            {%if isLogged==false %}
+            <button disabled="disabled">Déconnexion</button>
+            {%else%}
                 <button class = "bg-black text-white border border-black" type="submit"> Déconnexion</button>
+                {%endif %}
             </form>
 
         </li>
