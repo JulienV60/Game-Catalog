@@ -6,12 +6,8 @@
 {% block content %}
  {%for item in myPlatform %}
   <div class="container justify-content-center" style="width: 18rem ">
-    <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
+    <a href = "/{{item._id}}/{{item.slug}}"><img class="cover" src="{{item.cover.url}}"/></a>
    </div>
  {%endfor%}
-
-
-
-
 {% endblock %}
 
