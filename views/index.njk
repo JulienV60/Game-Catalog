@@ -2,208 +2,226 @@
 
 
 {% block content %}
-<li><button>
+
+
+<div class="container p-3 my-3  text-white ">
+<div class="row">
+<button type="button" class="btn btn-outline-light shadow-none">
 <a href="{{allPlatformsNameUnique[0]}}">
 <img src="{{urlPlatformsUnique[0]}}">
 </a>
-</li></button>
-<li>
-<div class="container">
-div
-<div class="row">
+</button>
+</div>
+<div class="row align-self-end">
   {%for item in myPlatform0 %}
     {% if loop.index0 < 4 %}
-    <div class="col">
-      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+    <div class="col align-self-end view overlay zoom">
+      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}" class="img-fluid " alt="smaple image"/></a>
+      <p> <a href = "/{{item._id}}/{{item.slug}}" class="link-light"> {{item.name}} </a></p>
     </div>
     {% endif %}
   {%endfor%}
   </div>
 </div>
-</li>
 
-<li><button>
+
+
+<div class="container p-3 my-3 border text-white opacity-100 shadow-lg p-3 mb-5  rounded">
+<div class="row">
+<button type="button" class="btn btn-outline-light">
 <a href="{{allPlatformsNameUnique[1]}}">
 <img src="{{urlPlatformsUnique[1]}}">
 </a>
 </button>
-</li>
-<li>
-<div class="container">
-<div class="row">
+</div>
+<div class="row align-self-end">
   {%for item in myPlatform1 %}
     {% if loop.index0 < 4 %}
-    <div class="col">
+    <div class="col align-self-end">
       <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <a href = "/{{item._id}}/{{item.slug}}" class="link-light"> {{item.name}} </a>
     </div>
     {% endif %}
   {%endfor%}
   </div>
 </div>
-</li>
 
-<li><button>
+
+
+<div class="container p-3 my-3 border text-white opacity-100 shadow-lg p-3 mb-5  rounded">
+<div class="row">
+<button type="button" class="btn btn-outline-light">
 <a href="{{allPlatformsNameUnique[2]}}">
 <img src="{{urlPlatformsUnique[2]}}">
 </a>
 </button>
-</li>
-<li>
-<div class="container">
-<div class="row">
+</div>
+<div class="row align-self-end">
   {%for item in myPlatform2 %}
     {% if loop.index0 < 4 %}
-    <div class="col">
+    <div class="col align-self-end">
       <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <a href = "/{{item._id}}/{{item.slug}}" class="link-light"> {{item.name}} </a>
     </div>
     {% endif %}
   {%endfor%}
   </div>
 </div>
-</li>
 
-<li><button>
+
+
+<div class="container p-3 my-3 border text-white opacity-100 shadow-lg p-3 mb-5  rounded">
+<div class="row">
+<button type="button" class="btn btn-outline-secondary">
 <a href="{{allPlatformsNameUnique[3]}}">
 <img src="{{urlPlatformsUnique[3]}}">
 </a>
-</li></button>
-<li>
-<div class="container">
-<div class="row">
+</button>
+</div>
+<div class="row align-self-end">
   {%for item in myPlatform3 %}
     {% if loop.index0 < 4 %}
-    <div class="col">
+    <div class="col align-self-end">
       <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <p> <a href = "/{{item._id}}/{{item.slug}}" class="link-light"> {{item.name}} </a></p>
     </div>
     {% endif %}
   {%endfor%}
   </div>
 </div>
-</li>
 
-<li><button>
+
+
+<div class="container p-3 my-3 border text-white opacity-100 shadow-lg p-3 mb-5  rounded ">
+<div class="row">
+<button type="button" class="btn btn-outline-light">
 <a href="{{allPlatformsNameUnique[7]}}">
 <img src="{{urlPlatformsUnique[7]}}">
 </a>
-</li></button>
-<li>
-<div class="container">
-<div class="row">
+</button>
+</div>
+<div class="row align-self-end">
   {%for item in myPlatform7 %}
     {% if loop.index0 < 4 %}
-    <div class="col">
-      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+    <div class="col align-self-end view overlay zoom">
+      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}" class="img-fluid " alt="smaple image"/></a>
+      <a href = "/{{item._id}}/{{item.slug}}" class="link-light"> {{item.name}} </a>
     </div>
     {% endif %}
   {%endfor%}
   </div>
 </div>
-</li>
 
-<li><button>
+
+
+<div class="container p-3 my-3 border text-white opacity-100 shadow-lg p-3 mb-5  rounded">
+<div class="row">
+<button type="button" class="btn btn-outline-light">
 <a href="{{allPlatformsNameUnique[4]}}">
 <img src="{{urlPlatformsUnique[4]}}">
 </a>
-</li></button>
-<li>
-<div class="container">
-<div class="row">
+</button>
+</div>
+<div class="row align-self-end">
   {%for item in myPlatform4 %}
     {% if loop.index0 < 4 %}
-    <div class="col">
+    <div class="col align-self-end">
       <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <a href = "/{{item._id}}/{{item.slug}}" class="link-light"> {{item.name}} </a>
     </div>
     {% endif %}
   {%endfor%}
   </div>
 </div>
-</li>
 
-<li><button>
+
+
+<div class="container p-3 my-3 border text-white opacity-100 shadow-lg p-3 mb-5  rounded">
+<div class="row">
+<button type="button" class="btn btn-outline-light">
 <a href="{{allPlatformsNameUnique[5]}}">
 <img src="{{urlPlatformsUnique[5]}}">
 </a>
-</li></button>
-<li>
-<div class="container">
-<div class="row">
+</button>
+</div>
+<div class="row align-self-end">
   {%for item in myPlatform5 %}
     {% if loop.index0 < 4 %}
-    <div class="col">
+    <div class="col align-self-end">
       <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <a href = "/{{item._id}}/{{item.slug}}" class="link-light"> {{item.name}} </a>
     </div>
     {% endif %}
   {%endfor%}
   </div>
 </div>
-</li>
 
-<li><button>
+
+
+<div class="container p-3 my-3 border text-white opacity-100 shadow-lg p-3 mb-5  rounded">
+<div class="row">
+<button type="button" class="btn btn-outline-light">
 <a href="{{allPlatformsNameUnique[6]}}">
 <img src="{{urlPlatformsUnique[6]}}">
 </a>
-</li></button>
-<li>
-<div class="container">
-<div class="row">
+</button>
+</div>
+<div class="row align-self-end">
   {%for item in myPlatform6 %}
     {% if loop.index0 < 4 %}
-    <div class="col">
+    <div class="col align-self-end">
       <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <p> <a href = "/{{item._id}}/{{item.slug}}" class="link-light"> {{item.name}} </a></p>
     </div>
     {% endif %}
   {%endfor%}
   </div>
 </div>
-</li>
 
-<li><button>
+
+
+<div class="container p-3 my-3 border text-white opacity-100 shadow-lg p-3 mb-5  rounded">
+<div class="row">
+<button type="button" class="btn btn-outline-light">
 <a href="{{allPlatformsNameUnique[8]}}">
 <img src="{{urlPlatformsUnique[8]}}">
 </a>
-</li></button>
-<li>
-<div class="container">
-<div class="row">
+</button>
+</div>
+<div class="row align-self-end">
   {%for item in myPlatform8 %}
     {% if loop.index0 < 4 %}
-    <div class="col">
-      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+    <div class="col align-self-end view overlay zoom">
+      <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}" class="img-fluid " alt="smaple image"/></a>
+      <a href = "/{{item._id}}/{{item.slug}}" class="link-light"> {{item.name}} </a>
     </div>
     {% endif %}
   {%endfor%}
   </div>
 </div>
-</li>
 
-<li><button>
+
+
+<div class="container p-3 my-3 border text-white opacity-100 shadow-lg p-3 mb-5  rounded">
+<div class="row">
+<button type="button" class="btn btn-outline-light">
 <a href="{{allPlatformsNameUnique[9]}}">
 <img src="{{urlPlatformsUnique[9]}}">
 </a>
-</li></button>
-<li>
-<div class="container">
-<div class="row">
+</button>
+</div>
+<div class="row align-self-end">
   {%for item in myPlatform9 %}
     {% if loop.index0 < 4 %}
-    <div class="col">
+    <div class="col align-self-end">
       <a href = "/{{item._id}}/{{item.slug}}"><img src="{{item.cover.url}}"/></a>
-      <p> {{item.name}}</p>
+      <a href = "/{{item._id}}/{{item.slug}}" class="link-light"> {{item.name}} </a>
     </div>
     {% endif %}
   {%endfor%}
   </div>
 </div>
-</li>
+
 
 
 
