@@ -158,7 +158,7 @@ export function makeApp(db: Db): core.Express {
       headers: {
         "Content-type": "application/x-www-form-urlencoded",
       },
-      body: `grant_type=authorization_code&client_id=${process.env.AUTH0_CLIENT_ID}&client_secret=${process.env.AUTH0_CLIENT_SECRET}&code=${queryCode}&redirect_uri=${process.env.AUTH0_HEROKU_HOST}`,
+      body: `grant_type=authorization_code&client_id=${process.env.AUTH0_CLIENT_ID}&client_secret=${process.env.AUTH0_CLIENT_SECRET}&code=${queryCode}&redirect_uri=${process.env.AUTH0_LOCAL_HOST}`,
     })
       .then((data) => data.json())
       .then((token) => token);
@@ -187,7 +187,7 @@ export function makeApp(db: Db): core.Express {
   });
   /// Login
   app.get("/login", (request, response) => {
-    const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTHO_HEROKU_REDIRECT}&audience=${process.env.AUTH0_AUDIENCE}&scope=${process.env.AUTH0_SCOPES}`;
+    const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}&audience=${process.env.AUTH0_AUDIENCE}&scope=${process.env.AUTH0_SCOPES}`;
     response.redirect(url);
   });
   /// Private(Control si il y a un bien une connexion/inscription et que le token/cookie est bien présent)
@@ -226,7 +226,11 @@ export function makeApp(db: Db): core.Express {
         const name = data.name;
         const nickname = data.nickname;
         const picture = data.picture;
-        response.render("account", { name, nickname, picture });
+        response.render("account", {
+          name,
+          nickname,
+          picture,
+        });
       });
   });
   app.get(
@@ -254,16 +258,37 @@ export function makeApp(db: Db): core.Express {
       };
       const idObject = new ObjectId(idPanierIndex);
       const url = await db.collection<Game>("games").findOne({ _id: idObject });
-      const name = url?.name;
-      const platform = url?.platform;
-      const cover = url?.cover;
-      response.render("account", { name, platform, cover });
+      const achatname = url?.name;
+      const achatplatform = url?.platform;
+      const achatcover = url?.cover;
+      const token = cookie.parse(request.headers.cookie || "");
+      const TokenAccess = token.AccessToken;
+      fetch(`${process.env.AUTH0_DOMAIN}/userinfo`, {
+        method: "Post",
+        headers: {
+          Authorization: `Bearer ${TokenAccess}`,
+        },
+      })
+        .then((datajson) => datajson.json())
+        .then((data) => {
+          const name = data.name;
+          const nickname = data.nickname;
+          const picture = data.picture;
+          response.render("account", {
+            name,
+            nickname,
+            picture,
+            achatname,
+            achatplatform,
+            achatcover,
+          });
+        });
     }
   );
 
   /// Logout + Destruction du cookie
   app.get("/logout", (request, response) => {
-    const url = `${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=${process.env.AUTH0_HEROKU_HOST}`;
+    const url = `${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=${process.env.AUTH0_LOCAL_HOST}`;
     response.setHeader("Set-Cookie", [
       cookie.serialize("AccessToken", "deleted", {
         httpOnly: true,
