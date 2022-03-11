@@ -158,7 +158,7 @@ export function makeApp(db: Db): core.Express {
       headers: {
         "Content-type": "application/x-www-form-urlencoded",
       },
-      body: `grant_type=authorization_code&client_id=${process.env.AUTH0_CLIENT_ID}&client_secret=${process.env.AUTH0_CLIENT_SECRET}&code=${queryCode}&redirect_uri=${process.env.AUTH0_LOCAL_HOST}`,
+      body: `grant_type=authorization_code&client_id=${process.env.AUTH0_CLIENT_ID}&client_secret=${process.env.AUTH0_CLIENT_SECRET}&code=${queryCode}&redirect_uri=${process.env.AUTH0_HEROKU_HOST}`,
     })
       .then((data) => data.json())
       .then((token) => token);
@@ -187,7 +187,7 @@ export function makeApp(db: Db): core.Express {
   });
   /// Login
   app.get("/login", (request, response) => {
-    const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTH0_REDIRECTURI}&audience=${process.env.AUTH0_AUDIENCE}&scope=${process.env.AUTH0_SCOPES}`;
+    const url = `${process.env.AUTH0_DOMAIN}/authorize?client_id=${process.env.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${process.env.AUTHO_HEROKU_REDIRECT}&audience=${process.env.AUTH0_AUDIENCE}&scope=${process.env.AUTH0_SCOPES}`;
     response.redirect(url);
   });
   /// Private(Control si il y a un bien une connexion/inscription et que le token/cookie est bien présent)
@@ -263,7 +263,7 @@ export function makeApp(db: Db): core.Express {
 
   /// Logout + Destruction du cookie
   app.get("/logout", (request, response) => {
-    const url = `${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=${process.env.AUTH0_LOCAL_HOST}`;
+    const url = `${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=${process.env.AUTH0_HEROKU_HOST}`;
     response.setHeader("Set-Cookie", [
       cookie.serialize("AccessToken", "deleted", {
         httpOnly: true,
